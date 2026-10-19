@@ -36,21 +36,55 @@
 
 ---
 
-## 💻 실행 방법
+## 🚀 실행 및 배포 방법
 
-### 방법 1. 웹 브라우저로 실행 (추천! 🎨)
-별도의 설치나 서버 실행 없이 바로 더블 클릭하여 실행할 수 있습니다:
-1. `index.html` 파일을 더블 클릭하거나 Chrome, Edge 등의 브라우저로 엽니다.
-2. 또는 파워셸에서:
-   ```powershell
-   Start-Process index.html
-   ```
+### 방법 1. 웹 브라우저로 로컬 실행
+- `index.html`을 더블 클릭하거나 브라우저로 엽니다.
 
-### 방법 2. 파이썬 터미널 CLI로 실행 (⌨️)
-명령 프롬프트 또는 파워셸에서 직관적인 텍스트 모드로 학습할 수 있습니다:
+### 방법 2. 파이썬 터미널 CLI 실행
 ```powershell
 python idiom_cli.py
 ```
+
+---
+
+## 🌐 GitHub 업로드 & Netlify 무료 실시간 배포 가이드
+
+### 1단계: GitHub에 저장소 올리기
+1. **GitHub 웹사이트(https://github.com/new)** 에서 `idiom-master`라는 이름의 새로운 빈 저장소(Public)를 생성합니다.
+2. 터미널(PowerShell)에서 아래 두 명령어를 실행합니다:
+   ```powershell
+   git remote add origin https://github.com/NamSangok/idiom-master.git
+   git push -u origin main
+   ```
+   *(또는 GitHub CLI를 이용하신다면 `gh auth login` 후 `gh repo create idiom-master --public --source=. --remote=origin --push` 명령어로 한 번에 생성 및 푸시 가능합니다.)*
+
+### 2단계: Netlify 실시간 자동 배포 연동
+1. **[Netlify](https://app.netlify.com)** 에 접속하여 로그인 (GitHub 계정으로 1초 로그인 추천)
+2. **"Add new site"** → **"Import an existing project"** 클릭 후 **GitHub** 선택
+3. 방금 올린 **`idiom-master`** 저장소 선택
+4. 설정값 확인:
+   - **Branch to deploy**: `main`
+   - **Build command**: (비워둠)
+   - **Publish directory**: `.`
+5. **"Deploy idiom-master"** 버튼 클릭!
+   - 약 10초 뒤 `https://[랜덤이름].netlify.app` 주소가 생성됩니다. (Site settings에서 원하는 도메인명으로 변경 가능)
+   - 이제 GitHub에 코드를 푸시할 때마다 Netlify가 자동으로 실시간 배포를 수행합니다!
+
+---
+
+## 📱 스마트폰에서 "진짜 모바일 앱(PWA)"으로 설치하는 법
+
+IdiomMaster는 PWA(Progressive Web App) 규격을 완벽 지원하므로, 앱스토어 설치 없이 홈 화면에 바로 설치할 수 있습니다:
+
+1. **스마트폰 브라우저**에서 배포된 Netlify 주소로 접속합니다.
+2. **iPhone (Safari)**:
+   - 하단 중앙의 **[공유 버튼 📤]** 터치 → **[홈 화면에 추가 (+)]** 선택
+3. **Android (Chrome)**:
+   - 우측 상단 **[더보기 (⋮)]** 터치 → **[홈 화면에 추가]** 또는 **[앱 설치]** 선택
+4. **결과**:
+   - 스마트폰 홈 화면에 `숙어마스터` 앱 아이콘이 생성됩니다.
+   - 브라우저 상단 주소창 없이 **네이티브 앱처럼 전체화면으로 실행**되며, 오프라인 및 음성 발음(TTS)도 완벽 지원됩니다!
 
 ---
 
