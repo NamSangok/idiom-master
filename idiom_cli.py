@@ -103,15 +103,23 @@ def flashcard_mode(idioms):
         if item.get("dialogue") and item["dialogue"].get("speakerA"):
             dlg = item["dialogue"]
             print(f"\n💬 [대화 예시]\n   A: {dlg['speakerA']}\n   B: {dlg['speakerB']}")
+        if item.get("userNote"):
+            print(f"\n📝 [나만의 학습 메모]\n   \033[33m{item['userNote']}\033[0m")
 
         print("\n--------------------------------------------")
-        status_choice = input("이 숙어를 외우셨나요? [1] 외웠어요(완료)  [2] 다시 볼래요(유지)  [Enter: 다음]: ").strip()
+        status_choice = input("선택: [1] 외웠어요(완료)  [2] 다시 볼래요(유지)  [3] 📝 메모 작성/수정  [Enter: 다음]: ").strip()
         if status_choice == "1":
             item["status"] = "mastered"
             print("🎉 '암기 완료'로 표시되었습니다!")
         elif status_choice == "2":
             item["status"] = "learning"
             print("📖 '복습 필요'로 표시되었습니다.")
+        elif status_choice == "3":
+            print(f"현재 메모: {item.get('userNote', '(없음)')}")
+            new_note = input("새로운 메모 내용 입력: ").strip()
+            if new_note:
+                item["userNote"] = new_note
+                print("✅ 나만의 메모가 저장되었습니다!")
     
     save_idioms(idioms)
 
@@ -183,14 +191,16 @@ def search_and_list(idioms):
             in_idiom = query in item["idiom"].lower()
             in_meaning = query in item["meaning"].lower()
             in_tags = any(query in t.lower() for t in item.get("tags", []))
-            if in_idiom or in_meaning or in_tags:
+            in_note = item.get("userNote") and query in item["userNote"].lower()
+            if in_idiom or in_meaning or in_tags or in_note:
                 results.append(item)
 
     print(f"\n총 {len(results)}개의 숙어가 검색되었습니다.\n")
     for idx, item in enumerate(results, 1):
         status_mark = "✅" if item.get("status") == "mastered" else "📖"
         fav_mark = "★" if item.get("favorite") else " "
-        print(f"{idx:2d}. {status_mark} {fav_mark} \033[1m{item['idiom']:<26}\033[0m : {item['meaning']}")
+        note_mark = "📝" if item.get("userNote") else "  "
+        print(f"{idx:2d}. {status_mark} {fav_mark} {note_mark} \033[1m{item['idiom']:<26}\033[0m : {item['meaning']}")
 
     detail_idx = input("\n상세보기를 원하는 번호를 입력하세요 (엔터: 메뉴로 복귀): ").strip()
     if detail_idx.isdigit() and 1 <= int(detail_idx) <= len(results):
@@ -204,7 +214,17 @@ def search_and_list(idioms):
         if item.get("example"):
             print(f"📖 예문: {item['example']}")
             print(f"   {item.get('exampleKo', '')}")
-        input("\n계속하려면 Enter를 누르세요...")
+        if item.get("userNote"):
+            print(f"📝 나만의 메모: \033[33m{item['userNote']}\033[0m")
+        
+        edit_choice = input("\n메모를 작성/수정하시겠습니까? (y/N): ").strip().lower()
+        if edit_choice == 'y':
+            new_note = input("메모 입력: ").strip()
+            item["userNote"] = new_note
+            save_idioms(idioms)
+            print("✅ 메모가 저장되었습니다!")
+        else:
+            input("계속하려면 Enter를 누르세요...")
 
 def add_custom_idiom(idioms):
     print("\n➕ [나만의 새로운 숙어 추가]")

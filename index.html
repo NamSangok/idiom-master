@@ -300,7 +300,7 @@
     /* 3D Flip Card Container */
     .flashcard-scene {
       width: 100%;
-      height: 420px;
+      height: 480px;
       perspective: 1200px;
       cursor: pointer;
       margin-bottom: 24px;
@@ -326,13 +326,23 @@
       height: 100%;
       backface-visibility: hidden;
       border-radius: var(--radius);
-      padding: 32px 28px;
+      padding: 28px 24px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
       border: 1px solid var(--card-border);
       background: var(--card-bg);
       overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--card-border) transparent;
+    }
+
+    .card-face::-webkit-scrollbar {
+      width: 6px;
+    }
+    .card-face::-webkit-scrollbar-thumb {
+      background-color: var(--card-border);
+      border-radius: 999px;
     }
 
     .card-front {
@@ -489,6 +499,62 @@
       border-radius: 8px;
       background: var(--card-border);
       opacity: 0.9;
+      margin-bottom: 12px;
+    }
+
+    /* Personal Study Note Box */
+    .user-note-box {
+      margin-top: 10px;
+      background: var(--primary-light);
+      border: 1.5px dashed var(--primary);
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: default;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .user-note-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .user-note-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .user-note-status {
+      font-size: 11px;
+      color: var(--success);
+      font-weight: 700;
+      min-height: 16px;
+    }
+
+    .user-note-textarea {
+      width: 100%;
+      min-height: 72px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-main);
+      resize: vertical;
+      outline: none;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+
+    .user-note-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
     }
 
     /* Deck Action Buttons */
@@ -919,7 +985,7 @@
         grid-template-columns: repeat(2, 1fr);
       }
       .flashcard-scene {
-        height: 480px;
+        height: 540px;
       }
       .idiom-title {
         font-size: 26px;
@@ -1049,6 +1115,22 @@
 
               <div class="dialogue-box" id="card-dialogue">
                 <strong>대화 예시:</strong> A: 긴장돼? / B: 전혀! 식은 죽 먹기야.
+              </div>
+
+              <!-- Personal Study Note Box -->
+              <div class="user-note-box" onclick="event.stopPropagation()">
+                <div class="user-note-header">
+                  <span class="user-note-title">📝 나만의 학습 메모</span>
+                  <span class="user-note-status" id="card-note-status"></span>
+                </div>
+                <textarea 
+                  id="card-user-note" 
+                  class="user-note-textarea" 
+                  placeholder="💡 나만의 연상 기억법, 헷갈리는 유의어, 추가 예문 등을 메모해 보세요... (입력 즉시 자동 저장)"
+                  oninput="handleCardNoteInput(event)"
+                  onclick="event.stopPropagation()"
+                  onkeydown="event.stopPropagation()"
+                ></textarea>
               </div>
             </div>
           </div>
@@ -1235,6 +1317,10 @@
         <div class="form-group">
           <label>태그 (쉼표로 구분)</label>
           <input type="text" id="form-tags" class="input-field" placeholder="수면, 피곤, 필수">
+        </div>
+        <div class="form-group">
+          <label>📝 나만의 학습 메모</label>
+          <textarea id="form-user-note" class="textarea-field" rows="2" placeholder="나만의 암기 꿀팁, 관련 유의어, 개인 메모 등..."></textarea>
         </div>
         <div style="display: flex; gap: 10px; margin-top: 24px;">
           <button type="button" class="btn-action btn-review" style="flex: 1;" onclick="closeAddModal()">취소</button>
@@ -1933,8 +2019,44 @@
         dlgBox.style.display = 'none';
       }
 
+      // Populate Back Note
+      const noteInput = document.getElementById('card-user-note');
+      const noteStatus = document.getElementById('card-note-status');
+      if (noteInput) {
+        noteInput.value = card.userNote || '';
+      }
+      if (noteStatus) {
+        noteStatus.textContent = card.userNote ? '저장됨 ✓' : '';
+        noteStatus.style.color = 'var(--success)';
+      }
+
       // Indicator
       document.getElementById('deck-count-text').textContent = `${deckIndex + 1} / ${currentDeck.length}`;
+    }
+
+    let noteSaveTimeout = null;
+    function handleCardNoteInput(e) {
+      const text = e.target.value;
+      const statusEl = document.getElementById('card-note-status');
+      if (statusEl) {
+        statusEl.textContent = '저장 중...';
+        statusEl.style.color = 'var(--warning)';
+      }
+
+      clearTimeout(noteSaveTimeout);
+      noteSaveTimeout = setTimeout(() => {
+        if (currentDeck.length > 0) {
+          const cur = currentDeck[deckIndex];
+          cur.userNote = text;
+          const target = idioms.find(i => i.id === cur.id);
+          if (target) target.userNote = text;
+          saveIdiomsData();
+          if (statusEl) {
+            statusEl.textContent = '저장됨 ✓';
+            statusEl.style.color = 'var(--success)';
+          }
+        }
+      }, 300);
     }
 
     function flipCurrentCard() {
@@ -2031,6 +2153,8 @@
         // Only if deck view is active and modal is closed
         if (!document.getElementById('view-deck').classList.contains('active')) return;
         if (document.getElementById('add-modal').classList.contains('open')) return;
+        // Do not trigger shortcuts when typing in an input or textarea
+        if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
 
         if (e.code === 'Space') {
           e.preventDefault();
@@ -2253,6 +2377,7 @@
         const matchesQuery = !query || 
           item.idiom.toLowerCase().includes(query) ||
           item.meaning.toLowerCase().includes(query) ||
+          (item.userNote && item.userNote.toLowerCase().includes(query)) ||
           (item.tags && item.tags.some(t => t.toLowerCase().includes(query)));
 
         // Category / Status Filter
@@ -2280,6 +2405,7 @@
         card.onclick = () => card.classList.toggle('open');
 
         const meaningClass = blindMode ? 'card-item-meaning blind-meaning' : 'card-item-meaning';
+        const hasNoteBadge = item.userNote ? '<span class="badge" style="background:#fef3c7;color:#b45309;font-size:11px;">📝 메모</span>' : '';
 
         card.innerHTML = `
           <div class="card-summary">
@@ -2289,6 +2415,7 @@
               <span class="${meaningClass}">${item.meaning}</span>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
+              ${hasNoteBadge}
               <span class="badge">${item.category || '일상'}</span>
               <button class="favorite-toggle ${item.favorite ? 'active' : ''}" onclick="toggleListFavorite(event, '${item.id}')">★</button>
             </div>
@@ -2307,7 +2434,23 @@
                 </div>
                 <div class="example-ko">${item.exampleKo || ''}</div>
               </div>` : ''}
-            <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px;">
+
+            <!-- Personal Study Note Box in List -->
+            <div class="user-note-box" onclick="event.stopPropagation()">
+              <div class="user-note-header">
+                <span class="user-note-title">📝 나만의 학습 메모</span>
+                <span class="user-note-status" id="list-note-status-${item.id}">${item.userNote ? '저장됨 ✓' : ''}</span>
+              </div>
+              <textarea 
+                class="user-note-textarea" 
+                placeholder="💡 나만의 연상 기억법, 헷갈리는 유의어, 추가 예문 등을 메모해 보세요... (입력 즉시 자동 저장)" 
+                oninput="handleListNoteInput(event, '${item.id}')"
+                onclick="event.stopPropagation()"
+                onkeydown="event.stopPropagation()"
+              >${item.userNote || ''}</textarea>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px;">
               <button class="btn-text" style="color: var(--primary);" onclick="editIdiom(event, '${item.id}')">✏️ 수정</button>
               <button class="btn-text" style="color: var(--danger);" onclick="deleteIdiom(event, '${item.id}')">🗑️ 삭제</button>
             </div>
@@ -2315,6 +2458,40 @@
         `;
         container.appendChild(card);
       });
+    }
+
+    let listNoteSaveTimeout = null;
+    function handleListNoteInput(e, id) {
+      const text = e.target.value;
+      const statusEl = document.getElementById(`list-note-status-${id}`);
+      if (statusEl) {
+        statusEl.textContent = '저장 중...';
+        statusEl.style.color = 'var(--warning)';
+      }
+
+      clearTimeout(listNoteSaveTimeout);
+      listNoteSaveTimeout = setTimeout(() => {
+        const target = idioms.find(i => i.id === id);
+        if (target) {
+          target.userNote = text;
+          saveIdiomsData();
+        }
+        if (statusEl) {
+          statusEl.textContent = '저장됨 ✓';
+          statusEl.style.color = 'var(--success)';
+        }
+        // Update flashcard note if same item is currently showing
+        if (currentDeck.length > 0 && currentDeck[deckIndex].id === id) {
+          currentDeck[deckIndex].userNote = text;
+          const cardNoteEl = document.getElementById('card-user-note');
+          const cardStatusEl = document.getElementById('card-note-status');
+          if (cardNoteEl) cardNoteEl.value = text;
+          if (cardStatusEl) {
+            cardStatusEl.textContent = '저장됨 ✓';
+            cardStatusEl.style.color = 'var(--success)';
+          }
+        }
+      }, 300);
     }
 
     function toggleListFavorite(e, id) {
@@ -2338,6 +2515,7 @@
     function openAddModal() {
       document.getElementById('idiom-form').reset();
       document.getElementById('form-id').value = '';
+      document.getElementById('form-user-note').value = '';
       document.getElementById('modal-title-text').textContent = '➕ 나만의 숙어 추가';
       document.getElementById('add-modal').classList.add('open');
     }
@@ -2360,6 +2538,7 @@
       document.getElementById('form-example').value = item.example || '';
       document.getElementById('form-example-ko').value = item.exampleKo || '';
       document.getElementById('form-tags').value = (item.tags || []).join(', ');
+      document.getElementById('form-user-note').value = item.userNote || '';
 
       document.getElementById('modal-title-text').textContent = '✏️ 숙어 수정';
       document.getElementById('add-modal').classList.add('open');
@@ -2385,6 +2564,7 @@
       const exampleVal = document.getElementById('form-example').value.trim();
       const exampleKoVal = document.getElementById('form-example-ko').value.trim();
       const tagsVal = document.getElementById('form-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+      const userNoteVal = document.getElementById('form-user-note').value.trim();
 
       if (id) {
         // Edit existing
@@ -2398,6 +2578,7 @@
           item.example = exampleVal;
           item.exampleKo = exampleKoVal;
           item.tags = tagsVal;
+          item.userNote = userNoteVal;
         }
       } else {
         // Add new
@@ -2411,6 +2592,7 @@
           example: exampleVal,
           exampleKo: exampleKoVal,
           tags: tagsVal,
+          userNote: userNoteVal,
           status: 'learning',
           favorite: false
         };
