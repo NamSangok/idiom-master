@@ -1,0 +1,2465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>IdiomMaster - 나만의 다빈도 영어 숙어 암기장</title>
+  <!-- PWA & Mobile App Support -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="숙어마스터">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #eef2ff;
+      --accent: #06b6d4;
+      --success: #10b981;
+      --success-light: #ecfdf5;
+      --danger: #ef4444;
+      --danger-light: #fef2f2;
+      --warning: #f59e0b;
+      --warning-light: #fffbeb;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+      --radius: 16px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-light: #312e81;
+      --accent: #22d3ee;
+      --success: #10b981;
+      --success-light: #064e3b;
+      --danger: #f87171;
+      --danger-light: #7f1d1d;
+      --warning: #fbbf24;
+      --warning-light: #78350f;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+      --shadow-lg: 0 10px 20px -3px rgb(0 0 0 / 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Pretendard", sans-serif;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 40px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+    }
+
+    /* Top Navigation Header */
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 20px;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-icon {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .btn-icon:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    /* Stats Banner */
+    .stats-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin: 24px 0 16px 0;
+      box-shadow: var(--shadow);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      text-align: center;
+    }
+
+    .stat-item {
+      padding: 10px 8px;
+      border-radius: 12px;
+      background: var(--bg);
+    }
+
+    .stat-val {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .stat-lbl {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 16px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Main Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 12px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+
+    .tab-btn:hover:not(.active) {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    /* View Content Areas */
+    .view-panel {
+      display: none;
+    }
+
+    .view-panel.active {
+      display: block;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =========================================
+       1. FLASHCARD MODE
+       ========================================= */
+    .card-deck-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .deck-controls-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .filter-select {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--text-main);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .deck-indicator {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    /* 3D Flip Card Container */
+    .flashcard-scene {
+      width: 100%;
+      height: 420px;
+      perspective: 1200px;
+      cursor: pointer;
+      margin-bottom: 24px;
+    }
+
+    .flashcard {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .flashcard.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      overflow-y: auto;
+    }
+
+    .card-front {
+      background: linear-gradient(180deg, var(--card-bg) 0%, var(--primary-light) 250%);
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      text-align: left;
+    }
+
+    .card-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .favorite-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: #cbd5e1;
+      transition: transform 0.2s;
+    }
+    .favorite-toggle.active {
+      color: #f59e0b;
+      transform: scale(1.15);
+    }
+
+    .idiom-title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+      margin: 16px 0 8px 0;
+    }
+
+    .idiom-pron {
+      font-size: 15px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    .btn-audio {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+      transition: transform 0.15s, background-color 0.15s;
+    }
+    .btn-audio:hover {
+      background: var(--primary-hover);
+      transform: scale(1.05);
+    }
+
+    .card-hint-click {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Card Back Details */
+    .meaning-box {
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+    }
+
+    .korean-meaning {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.3;
+    }
+
+    .origin-box {
+      background: var(--warning-light);
+      border-left: 4px solid var(--warning);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-main);
+      margin-bottom: 14px;
+    }
+
+    .origin-label {
+      font-weight: 700;
+      color: #b45309;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 2px;
+    }
+
+    .example-box {
+      background: var(--bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+
+    .example-en {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .example-ko {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .dialogue-box {
+      font-size: 12.5px;
+      line-height: 1.5;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--card-border);
+      opacity: 0.9;
+    }
+
+    /* Deck Action Buttons */
+    .deck-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .btn-action {
+      border: none;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-action:hover {
+      transform: translateY(-2px);
+    }
+    .btn-action:active {
+      transform: translateY(1px);
+    }
+
+    .btn-review {
+      background: var(--danger-light);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    .btn-flip {
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-mastered {
+      background: var(--success);
+      color: white;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .deck-nav-sub {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 16px;
+    }
+
+    .btn-text {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-text:hover {
+      color: var(--primary);
+    }
+
+    /* =========================================
+       2. QUIZ MODE
+       ========================================= */
+    .quiz-container {
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .quiz-setup-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .quiz-title {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .form-group {
+      text-align: left;
+      margin: 20px 0;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .radio-pill-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .radio-pill {
+      flex: 1;
+      min-width: 120px;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--bg);
+    }
+    .radio-pill.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* Active Quiz Screen */
+    .quiz-active-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .quiz-prompt-box {
+      text-align: center;
+      padding: 24px 16px;
+      background: var(--bg);
+      border-radius: 14px;
+      margin-bottom: 24px;
+    }
+
+    .quiz-prompt-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .quiz-question-text {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quiz-opt-btn {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-main);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .quiz-opt-btn:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+      transform: translateX(4px);
+    }
+
+    .quiz-opt-btn.correct {
+      border-color: var(--success);
+      background: var(--success-light);
+      color: var(--success);
+      font-weight: 800;
+    }
+
+    .quiz-opt-btn.wrong {
+      border-color: var(--danger);
+      background: var(--danger-light);
+      color: var(--danger);
+    }
+
+    .quiz-feedback-box {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
+      background: var(--bg);
+      border: 1px solid var(--card-border);
+      display: none;
+    }
+
+    .quiz-result-score {
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--primary);
+      margin: 16px 0;
+    }
+
+    /* =========================================
+       3. WORD LIST & DICTIONARY
+       ========================================= */
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 250px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 14px;
+      color: var(--text-main);
+      outline: none;
+    }
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    }
+
+    .blind-toggle-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .blind-toggle-btn.active {
+      background: var(--warning-light);
+      color: #b45309;
+      border-color: var(--warning);
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .pill-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .pill-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .idiom-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .idiom-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .idiom-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .card-summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .status-dot.learning { background: var(--warning); }
+    .status-dot.mastered { background: var(--success); }
+
+    .card-item-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .card-item-meaning {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-left: 10px;
+    }
+
+    .blind-meaning {
+      filter: blur(5px);
+      user-select: none;
+      transition: filter 0.2s;
+    }
+    .blind-meaning:hover {
+      filter: blur(0);
+    }
+
+    .card-expanded-body {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--card-border);
+      animation: fadeIn 0.2s ease;
+    }
+    .idiom-card.open .card-expanded-body {
+      display: block;
+    }
+
+    /* Modal Form for Add/Edit */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      max-width: 550px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .input-field, .textarea-field {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      color: var(--text-main);
+      outline: none;
+      margin-top: 6px;
+    }
+    .input-field:focus, .textarea-field:focus {
+      border-color: var(--primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .flashcard-scene {
+        height: 480px;
+      }
+      .idiom-title {
+        font-size: 26px;
+      }
+      .card-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .card-item-meaning {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="container header-content">
+      <div class="brand" onclick="switchView('deck')">
+        <div class="brand-icon">🌟</div>
+        <div>
+          <div class="brand-title">IdiomMaster</div>
+          <div class="brand-subtitle">나만의 다빈도 영어 숙어 암기장</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" title="다크/라이트 모드" onclick="toggleTheme()">🌓</button>
+        <button class="btn-icon" title="데이터 백업 (JSON)" onclick="exportData()">💾</button>
+        <button class="btn-icon" title="새 숙어 추가" onclick="openAddModal()">➕</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Top Stats Banner -->
+    <div class="stats-card">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-val" id="stat-total">0</div>
+          <div class="stat-lbl">총 숙어 수</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" style="color: var(--success);" id="stat-mastered">0</div>
+          <div class="stat-lbl">암기 완료 (외웠어요)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" style="color: var(--warning);" id="stat-learning">0</div>
+          <div class="stat-lbl">복습 필요 (학습중)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" style="color: #f59e0b;" id="stat-fav">0</div>
+          <div class="stat-lbl">⭐ 즐겨찾기</div>
+        </div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-bar" id="stat-progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchView('deck')">📇 플래시카드 학습</button>
+      <button class="tab-btn" onclick="switchView('quiz')">📝 퀴즈 챌린지</button>
+      <button class="tab-btn" onclick="switchView('list')">📚 숙어 사전 / 목록</button>
+    </div>
+
+    <!-- VIEW 1: FLASHCARD -->
+    <section id="view-deck" class="view-panel active">
+      <div class="card-deck-wrapper">
+        <div class="deck-controls-top">
+          <select id="deck-filter" class="filter-select" onchange="applyDeckFilter()">
+            <option value="all">모든 숙어 보기</option>
+            <option value="learning">📖 복습 필요한 숙어만</option>
+            <option value="favorite">⭐ 즐겨찾기한 숙어만</option>
+            <option value="일상회화">🗣️ 일상회화</option>
+            <option value="비즈니스">💼 비즈니스</option>
+            <option value="감정·태도">💡 감정 & 태도</option>
+          </select>
+          <div class="deck-indicator" id="deck-count-text">1 / 45</div>
+        </div>
+
+        <!-- 3D Flashcard Container -->
+        <div class="flashcard-scene" onclick="flipCurrentCard()">
+          <div class="flashcard" id="main-flashcard">
+            <!-- Front Face -->
+            <div class="card-face card-front">
+              <div class="card-top-bar">
+                <span class="badge" id="card-badge">일상회화</span>
+                <button class="favorite-toggle" id="card-fav-btn" onclick="toggleCurrentFavorite(event)">★</button>
+              </div>
+              <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <h2 class="idiom-title" id="card-idiom">piece of cake</h2>
+                <div class="idiom-pron" id="card-pron">[piːs əv keɪk]</div>
+                <button class="btn-audio" onclick="speakCurrentIdiom(event)">
+                  🔊 원어민 발음 듣기
+                </button>
+              </div>
+              <div class="card-hint-click">
+                👆 카드를 클릭하거나 Space를 누르면 뜻과 유래가 뒤집힙니다
+              </div>
+            </div>
+
+            <!-- Back Face -->
+            <div class="card-face card-back">
+              <div class="card-top-bar">
+                <span class="badge" id="card-badge-back">일상회화</span>
+                <button class="btn-audio" style="padding: 4px 10px; font-size: 11px;" onclick="speakCurrentIdiom(event)">🔊 숙어 듣기</button>
+              </div>
+              <div class="meaning-box">
+                <div class="korean-meaning" id="card-meaning">식은 죽 먹기, 아주 쉬운 일</div>
+              </div>
+              
+              <div class="origin-box" id="card-origin-container">
+                <div class="origin-label">💡 외우는 꿀팁 & 유래</div>
+                <div id="card-origin">19세기 미국에서 케이크를 상품으로 걸고...</div>
+              </div>
+
+              <div class="example-box">
+                <div class="example-en">
+                  <span id="card-example">Don't worry about the test; it's a piece of cake.</span>
+                  <button class="btn-icon" style="width: 28px; height: 28px; flex-shrink: 0;" title="예문 발음" onclick="speakCurrentExample(event)">🔊</button>
+                </div>
+                <div class="example-ko" id="card-example-ko">시험 걱정 마, 식은 죽 먹기야.</div>
+              </div>
+
+              <div class="dialogue-box" id="card-dialogue">
+                <strong>대화 예시:</strong> A: 긴장돼? / B: 전혀! 식은 죽 먹기야.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="deck-actions">
+          <button class="btn-action btn-review" onclick="markCardStatus('learning')">
+            ❌ 다시 볼래요 (↓)
+          </button>
+          <button class="btn-action btn-flip" onclick="flipCurrentCard()">
+            🔄 뒤집기 (Space)
+          </button>
+          <button class="btn-action btn-mastered" onclick="markCardStatus('mastered')">
+            ✅ 외웠어요! (↑)
+          </button>
+        </div>
+
+        <div class="deck-nav-sub">
+          <button class="btn-text" onclick="prevCard()">⬅️ 이전 숙어 (←)</button>
+          <button class="btn-text" onclick="shuffleDeck()">🔀 랜덤 섞기</button>
+          <button class="btn-text" onclick="nextCard()">다음 숙어 (→) ➡️</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: QUIZ -->
+    <section id="view-quiz" class="view-panel">
+      <div class="quiz-container">
+        <!-- Setup Screen -->
+        <div id="quiz-setup" class="quiz-setup-card">
+          <h2 class="quiz-title">🎯 실전 숙어 퀴즈 챌린지</h2>
+          <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">
+            문맥 속 예문과 뜻을 통해 숙어를 확실하게 내 것으로 만들어보세요!
+          </p>
+
+          <div class="form-group">
+            <label>퀴즈 유형</label>
+            <div class="radio-pill-group">
+              <div class="radio-pill selected" onclick="setQuizType('meaning', this)">
+                📚 한글 뜻 맞추기
+              </div>
+              <div class="radio-pill" onclick="setQuizType('cloze', this)">
+                🧩 예문 속 빈칸 채우기
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>문항 수</label>
+            <div class="radio-pill-group">
+              <div class="radio-pill selected" onclick="setQuizCount(5, this)">5문제</div>
+              <div class="radio-pill" onclick="setQuizCount(10, this)">10문제</div>
+              <div class="radio-pill" onclick="setQuizCount(20, this)">20문제</div>
+            </div>
+          </div>
+
+          <button class="btn-action btn-mastered" style="width: 100%; margin-top: 20px; font-size: 16px;" onclick="startQuiz()">
+            🚀 퀴즈 시작하기
+          </button>
+        </div>
+
+        <!-- Active Quiz Screen -->
+        <div id="quiz-active" class="quiz-active-card" style="display: none;">
+          <div class="quiz-header">
+            <span id="quiz-progress-text">문제 1 / 5</span>
+            <span id="quiz-score-badge" style="color: var(--primary);">점수: 0점</span>
+          </div>
+
+          <div class="quiz-prompt-box">
+            <div class="quiz-prompt-sub" id="quiz-prompt-instruction">다음 숙어의 올바른 한국어 의미는?</div>
+            <div class="quiz-question-text" id="quiz-question-main">piece of cake</div>
+            <button class="btn-audio" id="quiz-speak-btn" style="margin-top: 10px;" onclick="speakQuizText()">
+              🔊 원어민 발음 듣기
+            </button>
+          </div>
+
+          <div class="quiz-options" id="quiz-options-container">
+            <!-- Dynamic 4 Options -->
+          </div>
+
+          <div class="quiz-feedback-box" id="quiz-feedback">
+            <div id="quiz-feedback-result" style="font-weight: 800; font-size: 15px; margin-bottom: 4px;"></div>
+            <div id="quiz-feedback-detail" style="font-size: 13px; color: var(--text-muted);"></div>
+            <button class="btn-action btn-mastered" style="width: 100%; margin-top: 12px; padding: 10px;" onclick="nextQuizQuestion()">
+              다음 문제로 ➡️
+            </button>
+          </div>
+        </div>
+
+        <!-- Quiz Result Screen -->
+        <div id="quiz-summary" class="quiz-setup-card" style="display: none;">
+          <h2 class="quiz-title">🎉 퀴즈 완료!</h2>
+          <div class="quiz-result-score" id="quiz-final-score">80%</div>
+          <p id="quiz-final-text" style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">
+            5문제 중 4문제를 맞혔습니다!
+          </p>
+
+          <div id="quiz-mistakes-container" style="text-align: left; margin-bottom: 24px;"></div>
+
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-action btn-flip" style="flex: 1;" onclick="resetQuiz()">
+              다시 도전하기
+            </button>
+            <button class="btn-action btn-mastered" style="flex: 1;" onclick="switchView('deck')">
+              플래시카드로 복습하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: WORD LIST & DICTIONARY -->
+    <section id="view-list" class="view-panel">
+      <!-- Search & Filters -->
+      <div class="filter-bar">
+        <input type="text" id="list-search-input" class="search-input" placeholder="🔍 영어 숙어, 한글 뜻, 태그 검색..." oninput="renderIdiomList()">
+        <button class="blind-toggle-btn" id="blind-toggle" onclick="toggleBlindMode()">
+          👁️ 한글 뜻 가림판 모드
+        </button>
+      </div>
+
+      <div class="filter-pills">
+        <button class="pill-btn active" onclick="setListFilter('all', this)">전체</button>
+        <button class="pill-btn" onclick="setListFilter('favorite', this)">⭐ 즐겨찾기</button>
+        <button class="pill-btn" onclick="setListFilter('learning', this)">📖 복습 필요</button>
+        <button class="pill-btn" onclick="setListFilter('mastered', this)">✅ 암기 완료</button>
+        <button class="pill-btn" onclick="setListFilter('일상회화', this)">🗣️ 일상회화</button>
+        <button class="pill-btn" onclick="setListFilter('비즈니스', this)">💼 비즈니스</button>
+        <button class="pill-btn" onclick="setListFilter('감정·태도', this)">💡 감정 & 태도</button>
+      </div>
+
+      <!-- Idiom List Container -->
+      <div class="idiom-list" id="idiom-list-container">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- ADD / EDIT MODAL -->
+  <div class="modal-overlay" id="add-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title-text">➕ 나만의 숙어 추가</h3>
+        <button class="btn-icon" onclick="closeAddModal()">✕</button>
+      </div>
+      <form id="idiom-form" onsubmit="saveCustomIdiom(event)">
+        <input type="hidden" id="form-id">
+        <div class="form-group">
+          <label>영어 숙어 *</label>
+          <input type="text" id="form-idiom" class="input-field" placeholder="예: hit the sack" required>
+        </div>
+        <div class="form-group">
+          <label>한글 뜻 *</label>
+          <input type="text" id="form-meaning" class="input-field" placeholder="예: 잠자리에 들다" required>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label>카테고리</label>
+            <select id="form-category" class="input-field">
+              <option value="일상회화">일상회화</option>
+              <option value="비즈니스">비즈니스</option>
+              <option value="감정·태도">감정·태도</option>
+              <option value="기타">기타</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>발음 기호/힌트</label>
+            <input type="text" id="form-pron" class="input-field" placeholder="[hɪt ðə sæk]">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>💡 외우는 꿀팁 / 어원 유래</label>
+          <textarea id="form-origin" class="textarea-field" rows="2" placeholder="자루(sack)를 툭툭 치고 잠자리에 들던 것에서 유래..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>실전 영문 예문</label>
+          <input type="text" id="form-example" class="input-field" placeholder="I'm exhausted, so I need to hit the sack.">
+        </div>
+        <div class="form-group">
+          <label>예문 한글 해석</label>
+          <input type="text" id="form-example-ko" class="input-field" placeholder="너무 피곤해서 자러 가야겠어.">
+        </div>
+        <div class="form-group">
+          <label>태그 (쉼표로 구분)</label>
+          <input type="text" id="form-tags" class="input-field" placeholder="수면, 피곤, 필수">
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 24px;">
+          <button type="button" class="btn-action btn-review" style="flex: 1;" onclick="closeAddModal()">취소</button>
+          <button type="submit" class="btn-action btn-mastered" style="flex: 1;">저장하기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    // Initial Curated Dataset (Fallback if LocalStorage is empty)
+    const DEFAULT_IDIOMS = [
+      {
+        "id": "idiom_01",
+        "idiom": "piece of cake",
+        "meaning": "식은 죽 먹기, 아주 쉬운 일",
+        "pronunciation": "[piːs əv keɪk]",
+        "category": "일상회화",
+        "tags": ["쉬움", "자신감", "빈출"],
+        "origin": "19세기 미국에서 케이크를 상품으로 걸고 가장 멋지게 걷는 사람을 뽑던 쉬운 대회(Cakewalk)에서 유래되었습니다. '케이크 한 조각 먹기처럼 쉽다'는 뜻입니다.",
+        "example": "Don't worry about the driving test; it's a piece of cake once you practice.",
+        "exampleKo": "운전면허 시험 걱정 마, 연습만 하면 식은 죽 먹기야.",
+        "dialogue": {
+          "speakerA": "Are you nervous about tomorrow's presentation?",
+          "speakerB": "Not at all! I've rehearsed it ten times, so it'll be a piece of cake.",
+          "dialogueKo": "A: 내일 발표 때문에 긴장돼? / B: 전혀! 열 번이나 리허설해서 식은 죽 먹기일 거야."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_02",
+        "idiom": "break a leg",
+        "meaning": "행운을 빌어, 무대에서 멋지게 해내!",
+        "pronunciation": "[breɪk ə leɡ]",
+        "category": "일상회화",
+        "tags": ["응원", "시험/공연", "반어법"],
+        "origin": "서양 연극계 미신에서 '행운을 빌어(Good luck)'라고 말하면 질투하는 악령이 불운을 부른다고 믿어, 역설적으로 '다리나 부러져라!'라고 말하던 데서 유래되었습니다.",
+        "example": "You've rehearsed so hard for this musical. Go out there and break a leg!",
+        "exampleKo": "이번 뮤지컬을 위해 정말 피나게 연습했잖아. 무대에 올라가서 멋지게 부숴버려(행운을 빌어)!",
+        "dialogue": {
+          "speakerA": "My audition starts in five minutes. My hands are shaking!",
+          "speakerB": "Take a deep breath and break a leg! You've got this.",
+          "dialogueKo": "A: 5분 뒤에 오디션 시작이야. 손이 떨려! / B: 심호흡하고 멋지게 해내! 넌 할 수 있어."
+        },
+        "status": "learning",
+        "favorite": true
+      },
+      {
+        "id": "idiom_03",
+        "idiom": "under the weather",
+        "meaning": "몸이 찌뿌둥한, 컨디션이 안 좋은, 미열이 있는",
+        "pronunciation": "[ˈʌndər ðə ˈwɛðər]",
+        "category": "일상회화",
+        "tags": ["건강", "기분", "일상"],
+        "origin": "옛날 뱃사람들이 바다에서 악천후(weather)로 배가 흔들려 뱃멀미를 하거나 앓아누우면, 날씨의 영향을 덜 받는 갑판 아래(under the deck/weather)로 피신시켰던 데서 유래했습니다.",
+        "example": "I won't be able to make it to dinner tonight; I'm feeling a bit under the weather.",
+        "exampleKo": "오늘 저녁 약속엔 못 갈 것 같아. 몸이 좀 으슬으슬하고 컨디션이 안 좋아.",
+        "dialogue": {
+          "speakerA": "You look unusually quiet today. Are you feeling alright?",
+          "speakerB": "I'm just a little under the weather. I think I'm catching a cold.",
+          "dialogueKo": "A: 오늘따라 유난히 조용하네. 어디 안 좋아? / B: 그냥 컨디션이 좀 찌뿌둥해. 감기 기운이 있나 봐."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_04",
+        "idiom": "call it a day",
+        "meaning": "오늘은 여기까지 하다, 하루 일을 마무리하다",
+        "pronunciation": "[kɔːl ɪt ə deɪ]",
+        "category": "일상회화",
+        "tags": ["퇴근", "업무종료", "휴식"],
+        "origin": "노동자들이 힘든 작업을 끝마치며 '이것으로 오늘 하루(a working day)를 마무리했다고 부르자'라고 말하던 관용구입니다.",
+        "example": "We've been coding for eight hours straight. Let's call it a day and grab some food.",
+        "exampleKo": "우리 벌써 8시간 연속으로 코딩했어. 오늘은 이쯤에서 퇴근하고 밥이나 먹으러 가자.",
+        "dialogue": {
+          "speakerA": "Should we tackle the next bug before leaving?",
+          "speakerB": "Our brains are fried. Let's call it a day and review it with fresh eyes tomorrow.",
+          "dialogueKo": "A: 퇴근 전에 다음 버그도 잡고 갈까? / B: 머리가 터질 것 같아. 오늘은 여기까지 하고 내일 맑은 정신으로 보자."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_05",
+        "idiom": "bite the bullet",
+        "meaning": "눈 딱 감고 참다, 울며 겨자 먹기로 단행하다",
+        "pronunciation": "[baɪt ðə ˈbʊlɪt]",
+        "category": "일상회화",
+        "tags": ["결단", "용기", "인내"],
+        "origin": "과거 전쟁터에서 마취제가 부족하던 시절, 부상당한 병사가 고통스러운 수술을 견딜 수 있도록 입에 납 총알(bullet)을 물리고 이를 악물게 했던 처절한 유래를 가집니다.",
+        "example": "I really hated paying for the flight change fee, but I had to bite the bullet.",
+        "exampleKo": "항공권 변경 수수료를 내는 게 너무 아까웠지만, 어쩔 수 없이 눈 딱 감고 결제했어.",
+        "dialogue": {
+          "speakerA": "My toothache is getting unbearable, but I'm terrified of dentists.",
+          "speakerB": "You just have to bite the bullet and book an appointment before it gets worse.",
+          "dialogueKo": "A: 치통이 도저히 못 참을 지경인데 치과 가기는 너무 무서워. / B: 더 나빠지기 전에 눈 딱 감고 예약부터 해."
+        },
+        "status": "learning",
+        "favorite": true
+      },
+      {
+        "id": "idiom_06",
+        "idiom": "spill the beans",
+        "meaning": "비밀을 무심코 누설하다, 입방정을 떨다",
+        "pronunciation": "[spɪl ðə biːnz]",
+        "category": "일상회화",
+        "tags": ["비밀", "실수", "고백"],
+        "origin": "고대 그리스의 비밀 클럽이나 선거에서 흰 콩(찬성)과 검은 콩(반대)으로 투표했는데, 실수로 항아리를 엎질러(spill) 콩이 쏟아져 결과가 미리 탄로 난 데서 유래했습니다.",
+        "example": "We planned a surprise birthday party for Jane, but Peter accidentally spilled the beans.",
+        "exampleKo": "제인을 위해 깜짝 생일 파티를 기획했는데, 피터가 실수로 비밀을 다 털어놔 버렸어.",
+        "dialogue": {
+          "speakerA": "How did mom know we got her a new phone?",
+          "speakerB": "Tom spilled the beans at breakfast this morning!",
+          "dialogueKo": "A: 엄마가 새 폰 사드린 거 어떻게 아셨지? / B: 오늘 아침 먹을 때 톰이 입방정을 떨었거든!"
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_07",
+        "idiom": "hit the sack",
+        "meaning": "잠자리에 들다, 곯아떨어지러 가다",
+        "pronunciation": "[hɪt ðə sæk]",
+        "category": "일상회화",
+        "tags": ["수면", "피곤", "구어체"],
+        "origin": "과거에는 건초(hay)나 짚을 거친 자루(sack)에 채워 침대 매트리스로 썼는데, 잠들기 전 그 자루를 툭툭 치고 풀썩 쓰러져 자던 데서 유래되었습니다. (hit the hay도 동일)",
+        "example": "I'm running a marathon tomorrow morning, so I need to hit the sack right now.",
+        "exampleKo": "내일 아침에 마라톤을 뛰어야 해서, 지금 바로 자러 가야 해.",
+        "dialogue": {
+          "speakerA": "Do you want to watch another episode of this show?",
+          "speakerB": "I can barely keep my eyes open. I'm hitting the sack.",
+          "dialogueKo": "A: 이 드라마 다음 편 하나 더 볼래? / B: 눈이 감겨서 도저히 못 보겠어. 난 자러 갈게."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_08",
+        "idiom": "once in a blue moon",
+        "meaning": "극히 드물게, 가뭄에 콩 나듯",
+        "pronunciation": "[wʌns ɪn ə bluː muːn]",
+        "category": "일상회화",
+        "tags": ["빈도", "희귀", "감성"],
+        "origin": "한 달에 보름달이 두 번 뜰 때 두 번째 뜨는 달을 '블루문(Blue Moon)'이라 부르며, 평균 약 2.7년에 한 번만 일어날 정도로 매우 희귀한 현상인 데서 유래했습니다.",
+        "example": "He lives abroad, so he visits his hometown only once in a blue moon.",
+        "exampleKo": "그는 해외에 살아서, 고향에는 가뭄에 콩 나듯 아주 드물게 방문한다.",
+        "dialogue": {
+          "speakerA": "Do you go out clubbing on weekends?",
+          "speakerB": "Only once in a blue moon; I'm definitely a homebody.",
+          "dialogueKo": "A: 주말에 클럽 자주 놀러 가? / B: 진짜 가뭄에 콩 나듯 어쩌다 한번 가지; 난 완전 집돌이야."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_09",
+        "idiom": "pull someone's leg",
+        "meaning": "~에게 농담하다, 장난으로 속이다",
+        "pronunciation": "[pʊl ˈsʌmwʌnz leɡ]",
+        "category": "일상회화",
+        "tags": ["유머", "장난", "거짓말"],
+        "origin": "과거 런던 길거리의 소매치기들이 지나가는 사람의 다리를 걸어(pull leg) 넘어뜨리던 위험한 장난에서, 현대에는 가볍게 상대를 골려 먹는 장난을 의미하게 되었습니다.",
+        "example": "Stop worrying! I didn't actually lose your car keys; I was just pulling your leg.",
+        "exampleKo": "걱정 그만해! 네 차 키 진짜 잃어버린 거 아니야, 그냥 장난친 거라고.",
+        "dialogue": {
+          "speakerA": "Did the boss really say we all get a 50% bonus?",
+          "speakerB": "Don't get your hopes up—Mark was just pulling your leg.",
+          "dialogueKo": "A: 사장님이 진짜 전원 보너스 50% 주신다고 했어? / B: 김칫국 마시지 마—마크가 너 장난으로 놀린 거야."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_10",
+        "idiom": "speak of the devil",
+        "meaning": "호랑이도 제 말 하면 온다",
+        "pronunciation": "[spiːk əv ðə ˈdɛvəl]",
+        "category": "일상회화",
+        "tags": ["타이밍", "우연", "인기"],
+        "origin": "옛 영어 속담 'Speak of the Devil, and he doth appear'에서 유래하여 어떤 사람의 이야기를 하던 순간 그 사람이 나타났을 때 씁니다.",
+        "example": "Did you hear what happened to Mike yesterday? Oh, speak of the devil, here he comes!",
+        "exampleKo": "어제 마이크한테 무슨 일 있었는지 들었어? 어, 호랑이도 제 말 하면 온다더니, 저기 오네!",
+        "dialogue": {
+          "speakerA": "I wonder if Sarah finished the quarterly report.",
+          "speakerB": "Speak of the devil! Sarah just walked through the front door.",
+          "dialogueKo": "A: 사라가 분기 보고서 다 끝냈는지 궁금하네. / B: 호랑이도 제 말 하면 온다더니! 사라가 방금 들어오네."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_11",
+        "idiom": "cost an arm and a leg",
+        "meaning": "가격이 터무니없이 비싸다, 등골이 휠 정도로 돈이 들다",
+        "pronunciation": "[kɔːst ən ɑːrm ənd ə leɡ]",
+        "category": "일상회화",
+        "tags": ["가격", "소비", "과장"],
+        "origin": "자신의 팔과 다리를 내어주어야 할 만큼 값비싸고 귀중한 대가를 치른다는 과장 표현입니다.",
+        "example": "I would love to buy that electric sports car, but it costs an arm and a leg.",
+        "exampleKo": "저 전기 스포츠카 정말 사고 싶지만, 가격이 너무 터무니없이 비싸.",
+        "dialogue": {
+          "speakerA": "Where did you get that designer watch?",
+          "speakerB": "It was a gift from my uncle. It would've cost me an arm and a leg to buy it myself!",
+          "dialogueKo": "A: 그 명품 시계 어디서 났어? / B: 삼촌한테 선물 받았어. 내 돈 주고 샀으면 등골 휠 뻔했어!"
+        },
+        "status": "learning",
+        "favorite": true
+      },
+      {
+        "id": "idiom_12",
+        "idiom": "see eye to eye",
+        "meaning": "의견이 완전히 일치하다, 뜻이 통하다",
+        "pronunciation": "[siː aɪ tuː aɪ]",
+        "category": "일상회화",
+        "tags": ["동의", "관계", "협력"],
+        "origin": "두 사람이 시선의 높이를 맞추어 같은 대상을 똑같은 관점으로 바라본다는 뜻에서 비롯되었습니다.",
+        "example": "My business partner and I don't always see eye to eye, but we resolve conflicts professionally.",
+        "exampleKo": "내 사업 파트너와 나는 매번 의견이 딱 들어맞지는 않지만, 갈등을 프로답게 해결합니다.",
+        "dialogue": {
+          "speakerA": "Did the committee approve your new project proposal?",
+          "speakerB": "Surprisingly yes! Everyone saw eye to eye on the budget allocation.",
+          "dialogueKo": "A: 위원회에서 너의 새 프로젝트 제안서 승인해 줬어? / B: 놀랍게도 응! 예산 배분에 다들 의견이 일치했어."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_16",
+        "idiom": "get down to business",
+        "meaning": "본격적인 본론/업무에 들어가다",
+        "pronunciation": "[ɡɛt daʊn tuː ˈbɪznəs]",
+        "category": "비즈니스",
+        "tags": ["회의", "효율", "착수"],
+        "origin": "사교적인 스몰토크(small talk)를 마치고 회의의 본질적인 핵심 안건(business)으로 몸과 마음을 숙여 집중하자는 의미입니다.",
+        "example": "Now that the coffee break is over, let's get down to business and review the quarterly numbers.",
+        "exampleKo": "커피 브레이크가 끝났으니, 이제 본론으로 들어가서 이번 분기 실적 수치를 검토합시다.",
+        "dialogue": {
+          "speakerA": "Did everyone receive the agenda hand-out?",
+          "speakerB": "Yes. Let's get down to business so we can finish before noon.",
+          "dialogueKo": "A: 다들 안건 유인물 받으셨나요? / B: 네. 12시 전에 끝낼 수 있게 곧바로 본론으로 들어갑시다."
+        },
+        "status": "learning",
+        "favorite": true
+      },
+      {
+        "id": "idiom_17",
+        "idiom": "touch base",
+        "meaning": "(근황이나 진행 상황을 확인차) 가볍게 연락하다",
+        "pronunciation": "[tʌtʃ beɪs]",
+        "category": "비즈니스",
+        "tags": ["연락", "팔로업", "이메일"],
+        "origin": "야구 경기에서 주자가 다음 루로 가기 전에 베이스를 살짝 터치(touch base)하여 세이프 여부를 확인하는 동작에서 유래했습니다.",
+        "example": "I'm just calling to touch base regarding our meeting scheduled for next Thursday.",
+        "exampleKo": "다음 주 목요일로 예정된 미팅 건 확인차 가볍게 연락드렸습니다.",
+        "dialogue": {
+          "speakerA": "Have you heard back from the potential client?",
+          "speakerB": "Not yet. I'll touch base with their procurement team tomorrow morning.",
+          "dialogueKo": "A: 잠재 고객사에서 피드백 왔어? / B: 아직. 내일 아침에 상황 확인차 연락해 볼게."
+        },
+        "status": "learning",
+        "favorite": true
+      },
+      {
+        "id": "idiom_18",
+        "idiom": "back to the drawing board",
+        "meaning": "처음부터 다시 시작하다, 원점으로 돌아가다",
+        "pronunciation": "[bæk tuː ðə ˈdrɔːɪŋ bɔːrd]",
+        "category": "비즈니스",
+        "tags": ["재도전", "기획", "피드백"],
+        "origin": "엔지니어가 설계도면 판(drawing board)에 공들여 그린 설계가 모의실험에서 실패했을 때 백지 도면판으로 되돌아가던 데서 유래했습니다.",
+        "example": "The prototype completely failed the waterproof test, so it's back to the drawing board for our team.",
+        "exampleKo": "프로토타입이 방수 테스트에서 완전히 탈락해서, 우리 팀은 원점에서 다시 시작해야 합니다.",
+        "dialogue": {
+          "speakerA": "The focus group disliked the new app UI completely.",
+          "speakerB": "Disappointing, but back to the drawing board! We'll simplify the navigation.",
+          "dialogueKo": "A: 포커스 그룹이 새 앱 UI를 완전히 혹평했어. / B: 아쉽지만 원점부터 다시 짜야지!"
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_19",
+        "idiom": "cut corners",
+        "meaning": "(비용·시간을 줄이려) 원칙을 건너뛰다, 날림으로 대충 하다",
+        "pronunciation": "[kʌt ˈkɔːrnərz]",
+        "category": "비즈니스",
+        "tags": ["품질", "경고", "지름길"],
+        "origin": "도로 모퉁이(corners)를 정석대로 돌지 않고 잔디밭을 가로질러 지름길로 가듯, 절차나 품질 기준을 날림으로 생략하는 행위를 뜻합니다.",
+        "example": "Never cut corners on factory safety procedures just to save a few dollars.",
+        "exampleKo": "단돈 몇 달러를 아끼겠다고 공장 안전 수칙을 대충 넘어가서는 결코 안 됩니다.",
+        "dialogue": {
+          "speakerA": "Can we launch the software by Friday if we skip the stress tests?",
+          "speakerB": "Absolutely not. Cutting corners now will destroy our company's reputation.",
+          "dialogueKo": "A: 부하 테스트를 건너뛰면 금요일까지 출시할 수 있을까요? / B: 절대 안 됩니다. 지금 날림으로 처리하면 회사 평판이 무너집니다."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_20",
+        "idiom": "burn the midnight oil",
+        "meaning": "밤늦게까지 야근하다, 밤샘 공부를 하다",
+        "pronunciation": "[bɜːrn ðə ˈmɪdnaɪt ɔɪl]",
+        "category": "비즈니스",
+        "tags": ["야근", "열정", "마감"],
+        "origin": "전기가 보급되기 전 야간에 일하기 위해 오일 램프(기름등)에 밤새 기름을 태우며 불을 밝혔던 것에서 탄생했습니다.",
+        "example": "The marketing department burned the midnight oil to prepare for tomorrow's international expo.",
+        "exampleKo": "마케팅팀은 내일 열리는 국제 엑스포를 준비하기 위해 어젯밤 늦게까지 야근을 불태웠다.",
+        "dialogue": {
+          "speakerA": "How did you manage to submit the contract ahead of time?",
+          "speakerB": "I had to burn the midnight oil yesterday, but it was worth it.",
+          "dialogueKo": "A: 계약서를 어떻게 마감 시간보다 일찍 제출했어? / B: 어제 밤늦게까지 야근해야 했지만, 보람 있었어."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_21",
+        "idiom": "think outside the box",
+        "meaning": "틀에서 벗어나 창의적으로 생각하다, 발상을 전환하다",
+        "pronunciation": "[θɪŋk ˌaʊtˈsaɪd ðə bɑːks]",
+        "category": "비즈니스",
+        "tags": ["창의성", "혁신", "기획"],
+        "origin": "9개의 점을 4개의 직선으로 손을 떼지 않고 잇는 퍼즐에서, 9개의 점으로 이루어진 상자(box) 테두리 바깥으로 선을 확장해야만 풀리는 데서 유래했습니다.",
+        "example": "To stand out in a saturated market, startups must think outside the box.",
+        "exampleKo": "포화된 시장에서 돋보이려면 스타트업들은 고정관념을 벗어나 창의적으로 생각해야 합니다.",
+        "dialogue": {
+          "speakerA": "Traditional banner ads are giving us almost zero clicks.",
+          "speakerB": "Then let's think outside the box and create an interactive mini-game instead.",
+          "dialogueKo": "A: 전통적인 배너 광고는 클릭률이 거의 제로야. / B: 그럼 틀을 깨고 대화형 미니게임을 대신 만들어보자."
+        },
+        "status": "learning",
+        "favorite": true
+      },
+      {
+        "id": "idiom_23",
+        "idiom": "on the same page",
+        "meaning": "(같은 서류를 보듯) 생각을 같이하다, 이해를 공유하다",
+        "pronunciation": "[ɑːn ðə seɪm peɪdʒ]",
+        "category": "비즈니스",
+        "tags": ["소통", "팀워크", "합의"],
+        "origin": "오케스트라나 회의에서 모든 참가자가 악보나 자료의 정확히 같은 쪽(same page)을 펼쳐놓고 동일한 지점을 응시하며 조화를 이루는 모습에서 유래했습니다.",
+        "example": "Before sending the contract to the client, let's meet quickly to ensure everyone is on the same page.",
+        "exampleKo": "고객사에게 계약서를 보내기 전에, 우리 모두 같은 내용을 공유하고 있는지 퀵 미팅을 합시다.",
+        "dialogue": {
+          "speakerA": "Did the engineering team agree with the new product roadmap?",
+          "speakerB": "Yes, we had a two-hour sync and we are finally all on the same page.",
+          "dialogueKo": "A: 엔지니어링팀이 새 제품 로드맵에 동의했어? / B: 응, 두 시간 싱크 미팅을 해서 마침내 모두 한마음으로 의견을 맞췄어."
+        },
+        "status": "learning",
+        "favorite": true
+      },
+      {
+        "id": "idiom_24",
+        "idiom": "in a nutshell",
+        "meaning": "한마디로 요약하면, 간단히 말해서",
+        "pronunciation": "[ɪn ə ˈnʌtʃɛl]",
+        "category": "비즈니스",
+        "tags": ["요약", "발표", "핵심"],
+        "origin": "작고 단단한 견과류 껍질(nutshell) 속에 쏙 들어갈 수 있을 정도로 핵심 내용만을 극도로 압축했다는 뜻입니다.",
+        "example": "In a nutshell, switching to cloud infrastructure reduced our operating costs by 40%.",
+        "exampleKo": "한마디로 요약하면, 클라우드 인프라로 전환하여 운영 비용을 40% 절감했습니다.",
+        "dialogue": {
+          "speakerA": "The 50-page security audit is too long to read right now.",
+          "speakerB": "In a nutshell, our servers are secure, but we need stricter password policies.",
+          "dialogueKo": "A: 50페이지짜리 보안 보고서는 지금 다 읽기엔 너무 길어. / B: 한마디로 요약하자면 서버는 안전한데 비밀번호 정책을 강화해야 한다는 거야."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_28",
+        "idiom": "bottom line",
+        "meaning": "핵심 요점, 최종 결론 / (재무) 최종 순이익",
+        "pronunciation": "[ˈbɑːtəm laɪn]",
+        "category": "비즈니스",
+        "tags": ["핵심", "실적", "결론"],
+        "origin": "회계 장부나 손익계산서(P&L)의 맨 마지막 밑줄(bottom line)에 최종 순수익(Net Profit)이 적히는 데서, '모든 부연 설명을 제친 가장 결정적인 결론'을 뜻하게 되었습니다.",
+        "example": "The bottom line is that we cannot launch this feature without hiring two more engineers.",
+        "exampleKo": "핵심 결론은 엔지니어 두 명을 더 채용하지 않고서는 이 기능을 출시할 수 없다는 것입니다.",
+        "dialogue": {
+          "speakerA": "There are so many variables and pros and cons to this merger.",
+          "speakerB": "What's the bottom line? Will it make us profitable next year?",
+          "dialogueKo": "A: 이번 합병엔 변수가 너무 많아요. / B: 핵심 요점만 말해봐요. 내년에 우리에게 수익을 가져다줄까요?"
+        },
+        "status": "learning",
+        "favorite": true
+      },
+      {
+        "id": "idiom_30",
+        "idiom": "cut to the chase",
+        "meaning": "서론은 건너뛰고 곧바로 본론으로 들어가다",
+        "pronunciation": "[kʌt tuː ðə tʃeɪs]",
+        "category": "비즈니스",
+        "tags": ["속도", "직설", "회의"],
+        "origin": "초기 무성영화 시절 관객이 가장 좋아하는 박진감 넘치는 추격신(chase)으로 바로 필름을 잘라 넘어가도록 감독이 지시한 데서 유래했습니다.",
+        "example": "We have an emergency board meeting in five minutes, so please cut to the chase.",
+        "exampleKo": "5분 뒤에 긴급 이사회가 있으니, 군더더기 빼고 바로 본론부터 말씀해 주세요.",
+        "dialogue": {
+          "speakerA": "Well, our journey had numerous logistical challenges...",
+          "speakerB": "Cut to the chase, John: did we hit the sales quota or not?",
+          "dialogueKo": "A: 음, 이번에 난관이 참 많았는데요... / B: 존, 서론은 건너뛰고 본론만 말해요. 목표치 달성했습니까?"
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_31",
+        "idiom": "blessing in disguise",
+        "meaning": "전화위복, 뜻밖의 좋은 일 (처음엔 불행인 줄 알았던 축복)",
+        "pronunciation": "[ˈblɛsɪŋ ɪn dɪsˈɡaɪz]",
+        "category": "감정·태도",
+        "tags": ["희망", "반전", "지혜"],
+        "origin": "축복(blessing)이 겉으로는 재앙이나 불행의 위장(disguise)을 뒤집어쓰고 찾아왔다는 의미의 문학적 통찰에서 비롯되었습니다.",
+        "example": "Missing that flight was a blessing in disguise; I met my future co-founder in the lounge.",
+        "exampleKo": "그 비행기를 놓친 게 전화위복이었어. 공항 라운지에서 미래의 공동 창업자를 만났거든.",
+        "dialogue": {
+          "speakerA": "I'm heartbroken that I didn't get that job offer.",
+          "speakerB": "Keep your chin up. Sometimes rejection is a blessing in disguise.",
+          "dialogueKo": "A: 그 일자리 최종 합격 못 해서 너무 마음이 찢어져. / B: 고개 들어. 때로는 거절당하는 게 나중에 더 큰 전화위복이 되기도 해."
+        },
+        "status": "learning",
+        "favorite": true
+      },
+      {
+        "id": "idiom_32",
+        "idiom": "take with a grain of salt",
+        "meaning": "곧이곧대로 믿지 않고 걸러서 듣다, 반신반의하다",
+        "pronunciation": "[teɪk wɪð ə ɡreɪn əv sɔːlt]",
+        "category": "감정·태도",
+        "tags": ["비판적사고", "주의", "소문"],
+        "origin": "고대 로마에서 해독제 처방전에 소금 한 알(grain of salt)을 함께 삼키면 독성을 완화해 몸을 보호할 수 있다고 적은 데서 유래했습니다.",
+        "example": "He tends to exaggerate his achievements, so take his stories with a grain of salt.",
+        "exampleKo": "그 사람은 자기 성과를 과장하는 경향이 있으니, 그 사람 말은 적당히 걸러서 들어야 해.",
+        "dialogue": {
+          "speakerA": "Social media rumors claim that company is going bankrupt tomorrow.",
+          "speakerB": "I would take that with a grain of salt until an official statement is released.",
+          "dialogueKo": "A: SNS 루머에선 그 회사가 내일 파산할 거래. / B: 공식 발표가 나오기 전까지는 적당히 걸러서 듣는 게 좋아."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_33",
+        "idiom": "through thick and thin",
+        "meaning": "좋을 때나 나쁠 때나, 온갖 고난을 무릅쓰고 한결같이",
+        "pronunciation": "[θruː θɪk ənd θɪn]",
+        "category": "감정·태도",
+        "tags": ["의리", "우정", "인내"],
+        "origin": "중세 영국에서 여행자가 빽빽하고 험한 가시덤불 숲(thick)과 트인 평지(thin)를 가리지 않고 꿋꿋이 나아가던 모습에서 유래했습니다.",
+        "example": "True best friends stay loyal to each other through thick and thin.",
+        "exampleKo": "진정한 친구는 비바람이 불든 날이 맑든 온갖 고난 속에서도 서로에게 한결같이 의리를 지킵니다.",
+        "dialogue": {
+          "speakerA": "How long have you and David been business partners?",
+          "speakerB": "Over twenty years! We stuck together through thick and thin.",
+          "dialogueKo": "A: 데이비드와 동업한 지 얼마나 됐어요? / B: 20년이 넘었죠! 좋을 때나 힘들 때나 온갖 역경을 함께 버텨냈습니다."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_34",
+        "idiom": "out of the blue",
+        "meaning": "마른하늘에 날벼락처럼, 갑작스럽게, 뜬금없이",
+        "pronunciation": "[aʊt əv ðə bluː]",
+        "category": "감정·태도",
+        "tags": ["돌발", "놀람", "예상밖"],
+        "origin": "'A bolt out of the blue(구름 한 점 없이 맑고 파란 하늘에서 내리치는 벼락)'라는 관용 표현에서 축약되었습니다.",
+        "example": "Out of the blue, my childhood friend texted me after fifteen years of silence.",
+        "exampleKo": "15년 동안 연락 한 번 없던 소꿉친구가 뜬금없이 마른하늘에 날벼락처럼 문자를 보냈어.",
+        "dialogue": {
+          "speakerA": "Did Mark give you any advance notice before quitting?",
+          "speakerB": "None at all! He handed in his resignation totally out of the blue.",
+          "dialogueKo": "A: 마크가 그만두기 전에 미리 언질을 준 적이 있어? / B: 전혀! 완전 뜬금없이 사직서를 불쑥 내밀었어."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_37",
+        "idiom": "on the fence",
+        "meaning": "결정을 못 내리고 망설이는, 중립적인 입장을 취하는",
+        "pronunciation": "[ɑːn ðə fɛns]",
+        "category": "감정·태도",
+        "tags": ["고민", "결정장애", "중립"],
+        "origin": "울타리(fence) 위에 아슬아슬하게 걸터앉아 어느 쪽 마당으로 뛰어내릴지 결정을 내리지 못하고 좌우를 두리번거리는 모습에서 유래했습니다.",
+        "example": "I'm still on the fence about whether to buy an electric vehicle or a hybrid.",
+        "exampleKo": "전기차를 살지 하이브리드를 살지 아직도 결정을 못 내리고 망설이고 있어.",
+        "dialogue": {
+          "speakerA": "Are you joining the company ski retreat next month?",
+          "speakerB": "I'm still on the fence; it depends on how much workload I have.",
+          "dialogueKo": "A: 다음 달 회사 스키 워크숍 참여해? / B: 아직 고민 중이야. 일감이 얼마나 몰릴지에 달렸어."
+        },
+        "status": "learning",
+        "favorite": true
+      },
+      {
+        "id": "idiom_39",
+        "idiom": "hit the nail on the head",
+        "meaning": "정곡을 찌르다, 핵심을 정확히 맞히다",
+        "pronunciation": "[hɪt ðə neɪl ɑːn ðə hɛd]",
+        "category": "감정·태도",
+        "tags": ["정확", "공감", "통찰"],
+        "origin": "망치로 못의 몸통이 아닌 둥근 머리(nail head)를 정확하게 내리쳐 단번에 단단히 박아 넣는 명쾌한 솜씨에서 비롯되었습니다.",
+        "example": "When the analyst pointed out our slow customer service, she hit the nail on the head.",
+        "exampleKo": "그 애널리스트가 우리의 느린 고객 서비스를 지적했을 때, 정말 정곡을 정확히 찔렀습니다.",
+        "dialogue": {
+          "speakerA": "I think user retention is dropping because the signup flow has too many steps.",
+          "speakerB": "You hit the nail on the head! That's exactly what user feedback indicates.",
+          "dialogueKo": "A: 회원가입 단계가 너무 많아서 이탈하는 것 같아요. / B: 정곡을 찔렀어! 사용자 피드백도 정확히 그걸 가리켜."
+        },
+        "status": "learning",
+        "favorite": true
+      },
+      {
+        "id": "idiom_41",
+        "idiom": "barking up the wrong tree",
+        "meaning": "엉뚱한 사람을 짚다, 헛다리를 짚다",
+        "pronunciation": "[ˈbɑːrkɪŋ ʌp ðə rɔːŋ triː]",
+        "category": "감정·태도",
+        "tags": ["오해", "착각", "추리"],
+        "origin": "사냥개가 너구리가 올라간 나무가 아니라 엉뚱한 옆 나무 밑에서 목청껏 짖어대던(barking) 웃지 못할 실수에서 유래했습니다.",
+        "example": "If you think I was the one who deleted your spreadsheet, you're barking up the wrong tree.",
+        "exampleKo": "내가 네 스프레드시트를 지웠다고 생각한다면, 넌 완전히 헛다리를 짚은 거야.",
+        "dialogue": {
+          "speakerA": "Why are you grilling me about who leaked the confidential slide?",
+          "speakerB": "I apologize, I realize now I was barking up the wrong tree.",
+          "dialogueKo": "A: 기밀 슬라이드를 누가 유출했는지 왜 나를 추궁해? / B: 미안해, 내가 헛다리를 짚었다는 걸 이제 알았어."
+        },
+        "status": "learning",
+        "favorite": false
+      },
+      {
+        "id": "idiom_43",
+        "idiom": "cry over spilled milk",
+        "meaning": "이미 엎질러진 물을 두고 후회하다, 지나간 일로 한탄하다",
+        "pronunciation": "[kraɪ ˈoʊvər spɪld mɪlk]",
+        "category": "감정·태도",
+        "tags": ["후회", "극복", "조언"],
+        "origin": "바닥에 엎질러진 우유는 주워 담을 수 없으니 지나간 일로 자책해 봐야 아무 소용없다는 격언입니다.",
+        "example": "We lost the deal, but there's no use crying over spilled milk; let's focus on the next client.",
+        "exampleKo": "계약은 놓쳤지만 이미 엎질러진 물이야. 자책 그만하고 다음 고객에 집중하자.",
+        "dialogue": {
+          "speakerA": "I accidentally dropped and shattered my expensive camera lens!",
+          "speakerB": "I know it hurts, but don't cry over spilled milk. Let's see if insurance covers it.",
+          "dialogueKo": "A: 카메라 렌즈를 실수로 떨어뜨려서 박살 냈어! / B: 속상하겠지만 이미 일어난 일인걸. 보험 처리가 되는지 보자."
+        },
+        "status": "learning",
+        "favorite": false
+      }
+    ];
+
+    // State Variables
+    let idioms = [];
+    let currentDeck = [];
+    let deckIndex = 0;
+    let isFlipped = false;
+    let blindMode = false;
+    let currentListFilter = 'all';
+
+    // Quiz State
+    let quizType = 'meaning';
+    let quizCount = 5;
+    let quizQuestions = [];
+    let quizCurrentIdx = 0;
+    let quizScore = 0;
+    let quizMistakes = [];
+
+    // Initialize App
+    async function initApp() {
+      loadIdiomsData();
+      applyDeckFilter();
+      renderStats();
+      renderIdiomList();
+      setupKeyboardShortcuts();
+    }
+
+    // Load data from LocalStorage or Fallback
+    function loadIdiomsData() {
+      const stored = localStorage.getItem('idiom_master_data');
+      if (stored) {
+        try {
+          idioms = JSON.parse(stored);
+        } catch (e) {
+          idioms = DEFAULT_IDIOMS;
+        }
+      } else {
+        idioms = DEFAULT_IDIOMS;
+        saveIdiomsData();
+      }
+    }
+
+    function saveIdiomsData() {
+      localStorage.setItem('idiom_master_data', JSON.stringify(idioms));
+      renderStats();
+    }
+
+    // Update Global Statistics Banner
+    function renderStats() {
+      const total = idioms.length;
+      const mastered = idioms.filter(i => i.status === 'mastered').length;
+      const learning = total - mastered;
+      const fav = idioms.filter(i => i.favorite).length;
+      const pct = total === 0 ? 0 : Math.round((mastered / total) * 100);
+
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-mastered').textContent = mastered;
+      document.getElementById('stat-learning').textContent = learning;
+      document.getElementById('stat-fav').textContent = fav;
+      document.getElementById('stat-progress-bar').style.width = pct + '%';
+    }
+
+    // Tab Switching
+    function switchView(viewName) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+
+      if (viewName === 'deck') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('view-deck').classList.add('active');
+        applyDeckFilter();
+      } else if (viewName === 'quiz') {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('view-quiz').classList.add('active');
+        resetQuiz();
+      } else if (viewName === 'list') {
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        document.getElementById('view-list').classList.add('active');
+        renderIdiomList();
+      }
+    }
+
+    // =========================================
+    // FLASHCARD FUNCTIONS
+    // =========================================
+    function applyDeckFilter() {
+      const filterVal = document.getElementById('deck-filter').value;
+      if (filterVal === 'all') {
+        currentDeck = [...idioms];
+      } else if (filterVal === 'learning') {
+        currentDeck = idioms.filter(i => i.status !== 'mastered');
+      } else if (filterVal === 'favorite') {
+        currentDeck = idioms.filter(i => i.favorite);
+      } else {
+        currentDeck = idioms.filter(i => i.category === filterVal);
+      }
+
+      if (currentDeck.length === 0) {
+        currentDeck = [...idioms]; // fallback
+      }
+
+      deckIndex = 0;
+      showCard(deckIndex);
+    }
+
+    function showCard(index) {
+      if (currentDeck.length === 0) return;
+      if (index < 0) index = currentDeck.length - 1;
+      if (index >= currentDeck.length) index = 0;
+      deckIndex = index;
+
+      const card = currentDeck[deckIndex];
+      const cardEl = document.getElementById('main-flashcard');
+      cardEl.classList.remove('flipped');
+      isFlipped = false;
+
+      // Populate Front
+      document.getElementById('card-badge').textContent = card.category || '숙어';
+      document.getElementById('card-badge-back').textContent = card.category || '숙어';
+      document.getElementById('card-idiom').textContent = card.idiom;
+      document.getElementById('card-pron').textContent = card.pronunciation || '';
+      
+      const favBtn = document.getElementById('card-fav-btn');
+      if (card.favorite) {
+        favBtn.classList.add('active');
+        favBtn.textContent = '★';
+      } else {
+        favBtn.classList.remove('active');
+        favBtn.textContent = '☆';
+      }
+
+      // Populate Back
+      document.getElementById('card-meaning').textContent = card.meaning;
+      document.getElementById('card-origin').textContent = card.origin || '원어민들이 자주 쓰는 필수 관용구입니다.';
+      document.getElementById('card-example').textContent = card.example || '';
+      document.getElementById('card-example-ko').textContent = card.exampleKo || '';
+      
+      const dlgBox = document.getElementById('card-dialogue');
+      if (card.dialogue && card.dialogue.speakerA) {
+        dlgBox.style.display = 'block';
+        dlgBox.innerHTML = `<strong>실전 대화:</strong><br>A: ${card.dialogue.speakerA}<br>B: ${card.dialogue.speakerB}<br><span style="color:var(--text-muted);font-size:11.5px;">(${card.dialogue.dialogueKo || ''})</span>`;
+      } else {
+        dlgBox.style.display = 'none';
+      }
+
+      // Indicator
+      document.getElementById('deck-count-text').textContent = `${deckIndex + 1} / ${currentDeck.length}`;
+    }
+
+    function flipCurrentCard() {
+      const cardEl = document.getElementById('main-flashcard');
+      isFlipped = !isFlipped;
+      if (isFlipped) {
+        cardEl.classList.add('flipped');
+      } else {
+        cardEl.classList.remove('flipped');
+      }
+    }
+
+    function nextCard() {
+      showCard(deckIndex + 1);
+    }
+
+    function prevCard() {
+      showCard(deckIndex - 1);
+    }
+
+    function shuffleDeck() {
+      for (let i = currentDeck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [currentDeck[i], currentDeck[j]] = [currentDeck[j], currentDeck[i]];
+      }
+      deckIndex = 0;
+      showCard(0);
+    }
+
+    function markCardStatus(newStatus) {
+      if (currentDeck.length === 0) return;
+      const cur = currentDeck[deckIndex];
+      cur.status = newStatus;
+      
+      // sync with main idioms
+      const target = idioms.find(i => i.id === cur.id);
+      if (target) target.status = newStatus;
+      saveIdiomsData();
+
+      // move to next card smoothly
+      nextCard();
+    }
+
+    function toggleCurrentFavorite(e) {
+      if (e) e.stopPropagation();
+      if (currentDeck.length === 0) return;
+      const cur = currentDeck[deckIndex];
+      cur.favorite = !cur.favorite;
+      
+      const target = idioms.find(i => i.id === cur.id);
+      if (target) target.favorite = cur.favorite;
+      saveIdiomsData();
+
+      const favBtn = document.getElementById('card-fav-btn');
+      if (cur.favorite) {
+        favBtn.classList.add('active');
+        favBtn.textContent = '★';
+      } else {
+        favBtn.classList.remove('active');
+        favBtn.textContent = '☆';
+      }
+    }
+
+    // TTS Web Speech API
+    function playSpeech(text, rate = 0.95) {
+      if (!('speechSynthesis' in window)) {
+        alert('이 브라우저는 음성 합성을 지원하지 않습니다.');
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = rate;
+      window.speechSynthesis.speak(u);
+    }
+
+    function speakCurrentIdiom(e) {
+      if (e) e.stopPropagation();
+      if (currentDeck.length > 0) {
+        playSpeech(currentDeck[deckIndex].idiom);
+      }
+    }
+
+    function speakCurrentExample(e) {
+      if (e) e.stopPropagation();
+      if (currentDeck.length > 0 && currentDeck[deckIndex].example) {
+        playSpeech(currentDeck[deckIndex].example);
+      }
+    }
+
+    // Keyboard Shortcuts
+    function setupKeyboardShortcuts() {
+      window.addEventListener('keydown', (e) => {
+        // Only if deck view is active and modal is closed
+        if (!document.getElementById('view-deck').classList.contains('active')) return;
+        if (document.getElementById('add-modal').classList.contains('open')) return;
+
+        if (e.code === 'Space') {
+          e.preventDefault();
+          flipCurrentCard();
+        } else if (e.code === 'ArrowRight') {
+          e.preventDefault();
+          nextCard();
+        } else if (e.code === 'ArrowLeft') {
+          e.preventDefault();
+          prevCard();
+        } else if (e.code === 'ArrowUp') {
+          e.preventDefault();
+          markCardStatus('mastered');
+        } else if (e.code === 'ArrowDown') {
+          e.preventDefault();
+          markCardStatus('learning');
+        }
+      });
+    }
+
+    // =========================================
+    // QUIZ MODE FUNCTIONS
+    // =========================================
+    function setQuizType(type, el) {
+      quizType = type;
+      el.parentElement.querySelectorAll('.radio-pill').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function setQuizCount(count, el) {
+      quizCount = count;
+      el.parentElement.querySelectorAll('.radio-pill').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function resetQuiz() {
+      document.getElementById('quiz-setup').style.display = 'block';
+      document.getElementById('quiz-active').style.display = 'none';
+      document.getElementById('quiz-summary').style.display = 'none';
+    }
+
+    function startQuiz() {
+      if (idioms.length < 4) {
+        alert('퀴즈를 진행하려면 최소 4개 이상의 숙어가 필요합니다.');
+        return;
+      }
+
+      // Shuffle and pick questions
+      const pool = [...idioms];
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+
+      const selectedCount = Math.min(quizCount, pool.length);
+      quizQuestions = pool.slice(0, selectedCount);
+      quizCurrentIdx = 0;
+      quizScore = 0;
+      quizMistakes = [];
+
+      document.getElementById('quiz-setup').style.display = 'none';
+      document.getElementById('quiz-active').style.display = 'block';
+      document.getElementById('quiz-summary').style.display = 'none';
+
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      const q = quizQuestions[quizCurrentIdx];
+      document.getElementById('quiz-progress-text').textContent = `문제 ${quizCurrentIdx + 1} / ${quizQuestions.length}`;
+      document.getElementById('quiz-score-badge').textContent = `맞힌 개수: ${quizScore}개`;
+      document.getElementById('quiz-feedback').style.display = 'none';
+
+      const promptInstr = document.getElementById('quiz-prompt-instruction');
+      const questionMain = document.getElementById('quiz-question-main');
+      const optionsContainer = document.getElementById('quiz-options-container');
+      optionsContainer.innerHTML = '';
+
+      let correctAnswer = '';
+      let options = [];
+
+      if (quizType === 'meaning') {
+        promptInstr.textContent = '다음 숙어의 올바른 한국어 의미는?';
+        questionMain.textContent = q.idiom;
+        correctAnswer = q.meaning;
+
+        // Pick 3 random wrong meanings
+        const wrongPool = idioms.filter(item => item.id !== q.id).map(item => item.meaning);
+        shuffleArray(wrongPool);
+        options = [correctAnswer, ...wrongPool.slice(0, 3)];
+      } else {
+        // Cloze / Fill in the blank
+        promptInstr.textContent = '다음 예문의 빈칸 [ ? ]에 들어갈 숙어는?';
+        const blankedSentence = q.example.replace(new RegExp(q.idiom, 'i'), '[  ?  ]');
+        questionMain.textContent = blankedSentence;
+        correctAnswer = q.idiom;
+
+        // Pick 3 random wrong idioms
+        const wrongPool = idioms.filter(item => item.id !== q.id).map(item => item.idiom);
+        shuffleArray(wrongPool);
+        options = [correctAnswer, ...wrongPool.slice(0, 3)];
+      }
+
+      shuffleArray(options);
+
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-opt-btn';
+        btn.textContent = opt;
+        btn.onclick = () => handleQuizAnswer(opt, correctAnswer, q, btn);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function handleQuizAnswer(selected, correct, qItem, clickedBtn) {
+      const allBtns = document.querySelectorAll('.quiz-opt-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      const isCorrect = (selected === correct);
+      if (isCorrect) {
+        quizScore++;
+        clickedBtn.classList.add('correct');
+        document.getElementById('quiz-feedback-result').textContent = '🎉 정답입니다!';
+        document.getElementById('quiz-feedback-result').style.color = 'var(--success)';
+      } else {
+        clickedBtn.classList.add('wrong');
+        allBtns.forEach(b => {
+          if (b.textContent === correct) b.classList.add('correct');
+        });
+        document.getElementById('quiz-feedback-result').textContent = '❌ 아쉽네요!';
+        document.getElementById('quiz-feedback-result').style.color = 'var(--danger)';
+        quizMistakes.push({ ...qItem, selectedWrong: selected });
+      }
+
+      document.getElementById('quiz-feedback-detail').innerHTML = `
+        <strong>${qItem.idiom}</strong> : ${qItem.meaning}<br>
+        <span style="font-size: 12px; color: var(--text-muted);">${qItem.example || ''}</span>
+      `;
+      document.getElementById('quiz-feedback').style.display = 'block';
+    }
+
+    function nextQuizQuestion() {
+      quizCurrentIdx++;
+      if (quizCurrentIdx < quizQuestions.length) {
+        renderQuizQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function finishQuiz() {
+      document.getElementById('quiz-active').style.display = 'none';
+      document.getElementById('quiz-summary').style.display = 'block';
+
+      const total = quizQuestions.length;
+      const pct = Math.round((quizScore / total) * 100);
+      document.getElementById('quiz-final-score').textContent = pct + '%';
+      document.getElementById('quiz-final-text').textContent = `${total}문제 중 ${quizScore}문제를 맞혔습니다!`;
+
+      const mistakesBox = document.getElementById('quiz-mistakes-container');
+      if (quizMistakes.length > 0) {
+        let html = '<h4 style="margin-bottom: 10px; font-weight: 700;">📝 오답 노트 (다시 복습해보세요):</h4>';
+        quizMistakes.forEach(m => {
+          html += `
+            <div style="background: var(--bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 10px; margin-bottom: 8px;">
+              <div style="font-weight: 800; color: var(--primary);">${m.idiom}</div>
+              <div style="font-size: 13px;">뜻: ${m.meaning}</div>
+              <div style="font-size: 12px; color: var(--text-muted);">${m.example || ''}</div>
+            </div>
+          `;
+        });
+        mistakesBox.innerHTML = html;
+      } else {
+        mistakesBox.innerHTML = '<div style="color: var(--success); font-weight: 700; text-align: center;">🌟 완벽합니다! 모든 문제를 맞히셨습니다!</div>';
+      }
+    }
+
+    function speakQuizText() {
+      const q = quizQuestions[quizCurrentIdx];
+      if (q) playSpeech(q.idiom);
+    }
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    // =========================================
+    // WORD LIST & DICTIONARY
+    // =========================================
+    function toggleBlindMode() {
+      blindMode = !blindMode;
+      const btn = document.getElementById('blind-toggle');
+      if (blindMode) {
+        btn.classList.add('active');
+        btn.textContent = '🔒 가림판 켜짐 (마우스 호버 시 보임)';
+      } else {
+        btn.classList.remove('active');
+        btn.textContent = '👁️ 한글 뜻 가림판 모드';
+      }
+      renderIdiomList();
+    }
+
+    function setListFilter(filterKey, el) {
+      currentListFilter = filterKey;
+      el.parentElement.querySelectorAll('.pill-btn').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      renderIdiomList();
+    }
+
+    function renderIdiomList() {
+      const query = document.getElementById('list-search-input').value.trim().toLowerCase();
+      const container = document.getElementById('idiom-list-container');
+      container.innerHTML = '';
+
+      let filtered = idioms.filter(item => {
+        // Query search
+        const matchesQuery = !query || 
+          item.idiom.toLowerCase().includes(query) ||
+          item.meaning.toLowerCase().includes(query) ||
+          (item.tags && item.tags.some(t => t.toLowerCase().includes(query)));
+
+        // Category / Status Filter
+        let matchesFilter = true;
+        if (currentListFilter === 'favorite') matchesFilter = item.favorite;
+        else if (currentListFilter === 'learning') matchesFilter = item.status === 'learning';
+        else if (currentListFilter === 'mastered') matchesFilter = item.status === 'mastered';
+        else if (currentListFilter !== 'all') matchesFilter = item.category === currentListFilter;
+
+        return matchesQuery && matchesFilter;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+            검색 결과가 없습니다.
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'idiom-card';
+        card.onclick = () => card.classList.toggle('open');
+
+        const meaningClass = blindMode ? 'card-item-meaning blind-meaning' : 'card-item-meaning';
+
+        card.innerHTML = `
+          <div class="card-summary">
+            <div class="card-left">
+              <span class="status-dot ${item.status || 'learning'}"></span>
+              <span class="card-item-title">${item.idiom}</span>
+              <span class="${meaningClass}">${item.meaning}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge">${item.category || '일상'}</span>
+              <button class="favorite-toggle ${item.favorite ? 'active' : ''}" onclick="toggleListFavorite(event, '${item.id}')">★</button>
+            </div>
+          </div>
+          <div class="card-expanded-body">
+            <div style="display: flex; gap: 10px; margin-bottom: 12px; align-items: center;">
+              <button class="btn-audio" style="padding: 4px 10px; font-size: 12px;" onclick="speakSpecificText(event, '${item.idiom}')">🔊 발음 듣기</button>
+              <span style="font-size: 13px; color: var(--text-muted);">${item.pronunciation || ''}</span>
+            </div>
+            ${item.origin ? `<div class="origin-box"><div class="origin-label">💡 유래 & 암기팁</div>${item.origin}</div>` : ''}
+            ${item.example ? `
+              <div class="example-box">
+                <div class="example-en">
+                  <span>${item.example}</span>
+                  <button class="btn-icon" style="width: 26px; height: 26px; flex-shrink: 0;" onclick="speakSpecificText(event, '${item.example.replace(/'/g, "\\'")}')">🔊</button>
+                </div>
+                <div class="example-ko">${item.exampleKo || ''}</div>
+              </div>` : ''}
+            <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px;">
+              <button class="btn-text" style="color: var(--primary);" onclick="editIdiom(event, '${item.id}')">✏️ 수정</button>
+              <button class="btn-text" style="color: var(--danger);" onclick="deleteIdiom(event, '${item.id}')">🗑️ 삭제</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function toggleListFavorite(e, id) {
+      e.stopPropagation();
+      const item = idioms.find(i => i.id === id);
+      if (item) {
+        item.favorite = !item.favorite;
+        saveIdiomsData();
+        renderIdiomList();
+      }
+    }
+
+    function speakSpecificText(e, text) {
+      e.stopPropagation();
+      playSpeech(text);
+    }
+
+    // =========================================
+    // MODAL ADD / EDIT / DELETE
+    // =========================================
+    function openAddModal() {
+      document.getElementById('idiom-form').reset();
+      document.getElementById('form-id').value = '';
+      document.getElementById('modal-title-text').textContent = '➕ 나만의 숙어 추가';
+      document.getElementById('add-modal').classList.add('open');
+    }
+
+    function closeAddModal() {
+      document.getElementById('add-modal').classList.remove('open');
+    }
+
+    function editIdiom(e, id) {
+      e.stopPropagation();
+      const item = idioms.find(i => i.id === id);
+      if (!item) return;
+
+      document.getElementById('form-id').value = item.id;
+      document.getElementById('form-idiom').value = item.idiom;
+      document.getElementById('form-meaning').value = item.meaning;
+      document.getElementById('form-category').value = item.category || '일상회화';
+      document.getElementById('form-pron').value = item.pronunciation || '';
+      document.getElementById('form-origin').value = item.origin || '';
+      document.getElementById('form-example').value = item.example || '';
+      document.getElementById('form-example-ko').value = item.exampleKo || '';
+      document.getElementById('form-tags').value = (item.tags || []).join(', ');
+
+      document.getElementById('modal-title-text').textContent = '✏️ 숙어 수정';
+      document.getElementById('add-modal').classList.add('open');
+    }
+
+    function deleteIdiom(e, id) {
+      e.stopPropagation();
+      if (!confirm('이 숙어를 삭제하시겠습니까?')) return;
+      idioms = idioms.filter(i => i.id !== id);
+      saveIdiomsData();
+      renderIdiomList();
+      applyDeckFilter();
+    }
+
+    function saveCustomIdiom(e) {
+      e.preventDefault();
+      const id = document.getElementById('form-id').value;
+      const idiomVal = document.getElementById('form-idiom').value.trim();
+      const meaningVal = document.getElementById('form-meaning').value.trim();
+      const categoryVal = document.getElementById('form-category').value;
+      const pronVal = document.getElementById('form-pron').value.trim();
+      const originVal = document.getElementById('form-origin').value.trim();
+      const exampleVal = document.getElementById('form-example').value.trim();
+      const exampleKoVal = document.getElementById('form-example-ko').value.trim();
+      const tagsVal = document.getElementById('form-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+
+      if (id) {
+        // Edit existing
+        const item = idioms.find(i => i.id === id);
+        if (item) {
+          item.idiom = idiomVal;
+          item.meaning = meaningVal;
+          item.category = categoryVal;
+          item.pronunciation = pronVal;
+          item.origin = originVal;
+          item.example = exampleVal;
+          item.exampleKo = exampleKoVal;
+          item.tags = tagsVal;
+        }
+      } else {
+        // Add new
+        const newItem = {
+          id: 'custom_' + Date.now(),
+          idiom: idiomVal,
+          meaning: meaningVal,
+          category: categoryVal,
+          pronunciation: pronVal,
+          origin: originVal,
+          example: exampleVal,
+          exampleKo: exampleKoVal,
+          tags: tagsVal,
+          status: 'learning',
+          favorite: false
+        };
+        idioms.unshift(newItem);
+      }
+
+      saveIdiomsData();
+      closeAddModal();
+      renderIdiomList();
+      applyDeckFilter();
+    }
+
+    // Export Data to JSON
+    function exportData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(idioms, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `idioms_backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    // Theme toggle
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', next);
+      localStorage.setItem('idiom_master_theme', next);
+    }
+
+    // Load theme
+    const savedTheme = localStorage.getItem('idiom_master_theme');
+    if (savedTheme) {
+      document.body.setAttribute('data-theme', savedTheme);
+    }
+
+    // Launch
+    window.addEventListener('DOMContentLoaded', initApp);
+
+    // Register Service Worker for PWA (Installable App)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch((err) => {
+          console.log('SW registration skipped:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
