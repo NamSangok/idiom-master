@@ -1,4 +1,4 @@
-const CACHE_NAME = 'idiom-master-v1';
+const CACHE_NAME = 'idiom-master-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -26,7 +26,21 @@ self.addEventListener('activate', (e) => {
   self.clients.claim();
 });
 
+// Network-first for navigation/HTML, cache-first for other assets
 self.addEventListener('fetch', (e) => {
+  if (e.request.mode === 'navigate' || e.request.destination === 'document') {
+    e.respondWith(
+      fetch(e.request)
+        .then((res) => {
+          const resClone = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, resClone));
+          return res;
+        })
+        .catch(() => caches.match(e.request) || caches.match('./index.html'))
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then((res) => res || fetch(e.request))
   );

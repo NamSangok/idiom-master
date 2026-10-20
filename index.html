@@ -300,7 +300,7 @@
     /* 3D Flip Card Container */
     .flashcard-scene {
       width: 100%;
-      height: 480px;
+      height: 540px;
       perspective: 1200px;
       cursor: pointer;
       margin-bottom: 24px;
@@ -1094,10 +1094,29 @@
             <div class="card-face card-back">
               <div class="card-top-bar">
                 <span class="badge" id="card-badge-back">일상회화</span>
-                <button class="btn-audio" style="padding: 4px 10px; font-size: 11px;" onclick="speakCurrentIdiom(event)">🔊 숙어 듣기</button>
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn-audio" style="background: #f59e0b; padding: 4px 10px; font-size: 11px;" onclick="focusCardNote(event)">📝 메모 쓰기</button>
+                  <button class="btn-audio" style="padding: 4px 10px; font-size: 11px;" onclick="speakCurrentIdiom(event)">🔊 숙어 듣기</button>
+                </div>
               </div>
               <div class="meaning-box">
                 <div class="korean-meaning" id="card-meaning">식은 죽 먹기, 아주 쉬운 일</div>
+              </div>
+
+              <!-- Personal Study Note Box: RIGHT UNDER MEANING FOR INSTANT VISIBILITY -->
+              <div class="user-note-box" id="card-note-box" onclick="event.stopPropagation()">
+                <div class="user-note-header">
+                  <span class="user-note-title">📝 나만의 학습 메모</span>
+                  <span class="user-note-status" id="card-note-status"></span>
+                </div>
+                <textarea 
+                  id="card-user-note" 
+                  class="user-note-textarea" 
+                  placeholder="💡 나만의 연상 기억법, 헷갈리는 유의어, 추가 예문 등을 메모해 보세요... (입력 즉시 자동 저장)"
+                  oninput="handleCardNoteInput(event)"
+                  onclick="event.stopPropagation()"
+                  onkeydown="event.stopPropagation()"
+                ></textarea>
               </div>
               
               <div class="origin-box" id="card-origin-container">
@@ -1115,22 +1134,6 @@
 
               <div class="dialogue-box" id="card-dialogue">
                 <strong>대화 예시:</strong> A: 긴장돼? / B: 전혀! 식은 죽 먹기야.
-              </div>
-
-              <!-- Personal Study Note Box -->
-              <div class="user-note-box" onclick="event.stopPropagation()">
-                <div class="user-note-header">
-                  <span class="user-note-title">📝 나만의 학습 메모</span>
-                  <span class="user-note-status" id="card-note-status"></span>
-                </div>
-                <textarea 
-                  id="card-user-note" 
-                  class="user-note-textarea" 
-                  placeholder="💡 나만의 연상 기억법, 헷갈리는 유의어, 추가 예문 등을 메모해 보세요... (입력 즉시 자동 저장)"
-                  oninput="handleCardNoteInput(event)"
-                  onclick="event.stopPropagation()"
-                  onkeydown="event.stopPropagation()"
-                ></textarea>
               </div>
             </div>
           </div>
@@ -2057,6 +2060,15 @@
           }
         }
       }, 300);
+    }
+
+    function focusCardNote(e) {
+      if (e) e.stopPropagation();
+      const el = document.getElementById('card-user-note');
+      if (el) {
+        el.focus();
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     }
 
     function flipCurrentCard() {
