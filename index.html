@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>IdiomMaster - 나만의 다빈도 영어 숙어 암기장</title>
+  <title>IdiomMaster - 다빈도 문서독해·학술 영어 숙어 암기장</title>
   <!-- PWA & Mobile App Support -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4f46e5">
@@ -1010,10 +1010,11 @@
         <div class="brand-icon">🌟</div>
         <div>
           <div class="brand-title">IdiomMaster</div>
-          <div class="brand-subtitle">나만의 다빈도 영어 숙어 암기장</div>
+          <div class="brand-subtitle">다빈도 문서독해·학술 영어 숙어 암기장</div>
         </div>
       </div>
       <div class="header-actions">
+        <button class="btn-icon" title="독해 숙어장으로 새로고침" onclick="resetToDocIdioms()">🔄</button>
         <button class="btn-icon" title="다크/라이트 모드" onclick="toggleTheme()">🌓</button>
         <button class="btn-icon" title="데이터 백업 (JSON)" onclick="exportData()">💾</button>
         <button class="btn-icon" title="새 숙어 추가" onclick="openAddModal()">➕</button>
@@ -1059,12 +1060,13 @@
       <div class="card-deck-wrapper">
         <div class="deck-controls-top">
           <select id="deck-filter" class="filter-select" onchange="applyDeckFilter()">
-            <option value="all">모든 숙어 보기</option>
+            <option value="all">모든 숙어 보기 (전체 45개)</option>
             <option value="learning">📖 복습 필요한 숙어만</option>
             <option value="favorite">⭐ 즐겨찾기한 숙어만</option>
-            <option value="일상회화">🗣️ 일상회화</option>
-            <option value="비즈니스">💼 비즈니스</option>
-            <option value="감정·태도">💡 감정 & 태도</option>
+            <option value="논리·전개">🔗 논리·전개 (인과·조건)</option>
+            <option value="경제·비즈니스">💼 경제·비즈니스</option>
+            <option value="학술·연구">🔬 학술·연구 & 분석</option>
+            <option value="사회·시사">🌐 사회·시사 & 쟁점</option>
           </select>
           <div class="deck-indicator" id="deck-count-text">1 / 45</div>
         </div>
@@ -1075,12 +1077,12 @@
             <!-- Front Face -->
             <div class="card-face card-front">
               <div class="card-top-bar">
-                <span class="badge" id="card-badge">일상회화</span>
+                <span class="badge" id="card-badge">논리·전개</span>
                 <button class="favorite-toggle" id="card-fav-btn" onclick="toggleCurrentFavorite(event)">★</button>
               </div>
               <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                <h2 class="idiom-title" id="card-idiom">piece of cake</h2>
-                <div class="idiom-pron" id="card-pron">[piːs əv keɪk]</div>
+                <h2 class="idiom-title" id="card-idiom">in light of</h2>
+                <div class="idiom-pron" id="card-pron">[ɪn laɪt əv]</div>
                 <button class="btn-audio" onclick="speakCurrentIdiom(event)">
                   🔊 원어민 발음 듣기
                 </button>
@@ -1093,14 +1095,14 @@
             <!-- Back Face -->
             <div class="card-face card-back">
               <div class="card-top-bar">
-                <span class="badge" id="card-badge-back">일상회화</span>
+                <span class="badge" id="card-badge-back">논리·전개</span>
                 <div style="display: flex; gap: 6px;">
                   <button class="btn-audio" style="background: #f59e0b; padding: 4px 10px; font-size: 11px;" onclick="focusCardNote(event)">📝 메모 쓰기</button>
                   <button class="btn-audio" style="padding: 4px 10px; font-size: 11px;" onclick="speakCurrentIdiom(event)">🔊 숙어 듣기</button>
                 </div>
               </div>
               <div class="meaning-box">
-                <div class="korean-meaning" id="card-meaning">식은 죽 먹기, 아주 쉬운 일</div>
+                <div class="korean-meaning" id="card-meaning">~에 비추어 볼 때, ~을 고려하여</div>
               </div>
 
               <!-- Personal Study Note Box: RIGHT UNDER MEANING FOR INSTANT VISIBILITY -->
@@ -1121,15 +1123,15 @@
               
               <div class="origin-box" id="card-origin-container">
                 <div class="origin-label">💡 외우는 꿀팁 & 유래</div>
-                <div id="card-origin">19세기 미국에서 케이크를 상품으로 걸고...</div>
+                <div id="card-origin">새로운 정보나 증거의 '빛(light)'을 비추어 상황을 재평가한다는 뜻으로...</div>
               </div>
 
               <div class="example-box">
                 <div class="example-en">
-                  <span id="card-example">Don't worry about the test; it's a piece of cake.</span>
+                  <span id="card-example">In light of recent economic volatility, central banks decided to hold interest rates steady.</span>
                   <button class="btn-icon" style="width: 28px; height: 28px; flex-shrink: 0;" title="예문 발음" onclick="speakCurrentExample(event)">🔊</button>
                 </div>
-                <div class="example-ko" id="card-example-ko">시험 걱정 마, 식은 죽 먹기야.</div>
+                <div class="example-ko" id="card-example-ko">최근의 경제 변동성을 고려하여, 중앙은행들은 금리를 동결하기로 결정했습니다.</div>
               </div>
 
               <div class="dialogue-box" id="card-dialogue">
@@ -1257,13 +1259,14 @@
       </div>
 
       <div class="filter-pills">
-        <button class="pill-btn active" onclick="setListFilter('all', this)">전체</button>
+        <button class="pill-btn active" onclick="setListFilter('all', this)">전체 (45)</button>
         <button class="pill-btn" onclick="setListFilter('favorite', this)">⭐ 즐겨찾기</button>
         <button class="pill-btn" onclick="setListFilter('learning', this)">📖 복습 필요</button>
         <button class="pill-btn" onclick="setListFilter('mastered', this)">✅ 암기 완료</button>
-        <button class="pill-btn" onclick="setListFilter('일상회화', this)">🗣️ 일상회화</button>
-        <button class="pill-btn" onclick="setListFilter('비즈니스', this)">💼 비즈니스</button>
-        <button class="pill-btn" onclick="setListFilter('감정·태도', this)">💡 감정 & 태도</button>
+        <button class="pill-btn" onclick="setListFilter('논리·전개', this)">🔗 논리·전개</button>
+        <button class="pill-btn" onclick="setListFilter('경제·비즈니스', this)">💼 경제·비즈니스</button>
+        <button class="pill-btn" onclick="setListFilter('학술·연구', this)">🔬 학술·연구</button>
+        <button class="pill-btn" onclick="setListFilter('사회·시사', this)">🌐 사회·시사</button>
       </div>
 
       <!-- Idiom List Container -->
@@ -1294,9 +1297,10 @@
           <div class="form-group">
             <label>카테고리</label>
             <select id="form-category" class="input-field">
-              <option value="일상회화">일상회화</option>
-              <option value="비즈니스">비즈니스</option>
-              <option value="감정·태도">감정·태도</option>
+              <option value="논리·전개">논리·전개</option>
+              <option value="경제·비즈니스">경제·비즈니스</option>
+              <option value="학술·연구">학술·연구</option>
+              <option value="사회·시사">사회·시사</option>
               <option value="기타">기타</option>
             </select>
           </div>
@@ -1337,547 +1341,1043 @@
   <script>
     // Initial Curated Dataset (Fallback if LocalStorage is empty)
     const DEFAULT_IDIOMS = [
-      {
-        "id": "idiom_01",
-        "idiom": "piece of cake",
-        "meaning": "식은 죽 먹기, 아주 쉬운 일",
-        "pronunciation": "[piːs əv keɪk]",
-        "category": "일상회화",
-        "tags": ["쉬움", "자신감", "빈출"],
-        "origin": "19세기 미국에서 케이크를 상품으로 걸고 가장 멋지게 걷는 사람을 뽑던 쉬운 대회(Cakewalk)에서 유래되었습니다. '케이크 한 조각 먹기처럼 쉽다'는 뜻입니다.",
-        "example": "Don't worry about the driving test; it's a piece of cake once you practice.",
-        "exampleKo": "운전면허 시험 걱정 마, 연습만 하면 식은 죽 먹기야.",
-        "dialogue": {
-          "speakerA": "Are you nervous about tomorrow's presentation?",
-          "speakerB": "Not at all! I've rehearsed it ten times, so it'll be a piece of cake.",
-          "dialogueKo": "A: 내일 발표 때문에 긴장돼? / B: 전혀! 열 번이나 리허설해서 식은 죽 먹기일 거야."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_02",
-        "idiom": "break a leg",
-        "meaning": "행운을 빌어, 무대에서 멋지게 해내!",
-        "pronunciation": "[breɪk ə leɡ]",
-        "category": "일상회화",
-        "tags": ["응원", "시험/공연", "반어법"],
-        "origin": "서양 연극계 미신에서 '행운을 빌어(Good luck)'라고 말하면 질투하는 악령이 불운을 부른다고 믿어, 역설적으로 '다리나 부러져라!'라고 말하던 데서 유래되었습니다.",
-        "example": "You've rehearsed so hard for this musical. Go out there and break a leg!",
-        "exampleKo": "이번 뮤지컬을 위해 정말 피나게 연습했잖아. 무대에 올라가서 멋지게 부숴버려(행운을 빌어)!",
-        "dialogue": {
-          "speakerA": "My audition starts in five minutes. My hands are shaking!",
-          "speakerB": "Take a deep breath and break a leg! You've got this.",
-          "dialogueKo": "A: 5분 뒤에 오디션 시작이야. 손이 떨려! / B: 심호흡하고 멋지게 해내! 넌 할 수 있어."
-        },
-        "status": "learning",
-        "favorite": true
-      },
-      {
-        "id": "idiom_03",
-        "idiom": "under the weather",
-        "meaning": "몸이 찌뿌둥한, 컨디션이 안 좋은, 미열이 있는",
-        "pronunciation": "[ˈʌndər ðə ˈwɛðər]",
-        "category": "일상회화",
-        "tags": ["건강", "기분", "일상"],
-        "origin": "옛날 뱃사람들이 바다에서 악천후(weather)로 배가 흔들려 뱃멀미를 하거나 앓아누우면, 날씨의 영향을 덜 받는 갑판 아래(under the deck/weather)로 피신시켰던 데서 유래했습니다.",
-        "example": "I won't be able to make it to dinner tonight; I'm feeling a bit under the weather.",
-        "exampleKo": "오늘 저녁 약속엔 못 갈 것 같아. 몸이 좀 으슬으슬하고 컨디션이 안 좋아.",
-        "dialogue": {
-          "speakerA": "You look unusually quiet today. Are you feeling alright?",
-          "speakerB": "I'm just a little under the weather. I think I'm catching a cold.",
-          "dialogueKo": "A: 오늘따라 유난히 조용하네. 어디 안 좋아? / B: 그냥 컨디션이 좀 찌뿌둥해. 감기 기운이 있나 봐."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_04",
-        "idiom": "call it a day",
-        "meaning": "오늘은 여기까지 하다, 하루 일을 마무리하다",
-        "pronunciation": "[kɔːl ɪt ə deɪ]",
-        "category": "일상회화",
-        "tags": ["퇴근", "업무종료", "휴식"],
-        "origin": "노동자들이 힘든 작업을 끝마치며 '이것으로 오늘 하루(a working day)를 마무리했다고 부르자'라고 말하던 관용구입니다.",
-        "example": "We've been coding for eight hours straight. Let's call it a day and grab some food.",
-        "exampleKo": "우리 벌써 8시간 연속으로 코딩했어. 오늘은 이쯤에서 퇴근하고 밥이나 먹으러 가자.",
-        "dialogue": {
-          "speakerA": "Should we tackle the next bug before leaving?",
-          "speakerB": "Our brains are fried. Let's call it a day and review it with fresh eyes tomorrow.",
-          "dialogueKo": "A: 퇴근 전에 다음 버그도 잡고 갈까? / B: 머리가 터질 것 같아. 오늘은 여기까지 하고 내일 맑은 정신으로 보자."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_05",
-        "idiom": "bite the bullet",
-        "meaning": "눈 딱 감고 참다, 울며 겨자 먹기로 단행하다",
-        "pronunciation": "[baɪt ðə ˈbʊlɪt]",
-        "category": "일상회화",
-        "tags": ["결단", "용기", "인내"],
-        "origin": "과거 전쟁터에서 마취제가 부족하던 시절, 부상당한 병사가 고통스러운 수술을 견딜 수 있도록 입에 납 총알(bullet)을 물리고 이를 악물게 했던 처절한 유래를 가집니다.",
-        "example": "I really hated paying for the flight change fee, but I had to bite the bullet.",
-        "exampleKo": "항공권 변경 수수료를 내는 게 너무 아까웠지만, 어쩔 수 없이 눈 딱 감고 결제했어.",
-        "dialogue": {
-          "speakerA": "My toothache is getting unbearable, but I'm terrified of dentists.",
-          "speakerB": "You just have to bite the bullet and book an appointment before it gets worse.",
-          "dialogueKo": "A: 치통이 도저히 못 참을 지경인데 치과 가기는 너무 무서워. / B: 더 나빠지기 전에 눈 딱 감고 예약부터 해."
-        },
-        "status": "learning",
-        "favorite": true
-      },
-      {
-        "id": "idiom_06",
-        "idiom": "spill the beans",
-        "meaning": "비밀을 무심코 누설하다, 입방정을 떨다",
-        "pronunciation": "[spɪl ðə biːnz]",
-        "category": "일상회화",
-        "tags": ["비밀", "실수", "고백"],
-        "origin": "고대 그리스의 비밀 클럽이나 선거에서 흰 콩(찬성)과 검은 콩(반대)으로 투표했는데, 실수로 항아리를 엎질러(spill) 콩이 쏟아져 결과가 미리 탄로 난 데서 유래했습니다.",
-        "example": "We planned a surprise birthday party for Jane, but Peter accidentally spilled the beans.",
-        "exampleKo": "제인을 위해 깜짝 생일 파티를 기획했는데, 피터가 실수로 비밀을 다 털어놔 버렸어.",
-        "dialogue": {
-          "speakerA": "How did mom know we got her a new phone?",
-          "speakerB": "Tom spilled the beans at breakfast this morning!",
-          "dialogueKo": "A: 엄마가 새 폰 사드린 거 어떻게 아셨지? / B: 오늘 아침 먹을 때 톰이 입방정을 떨었거든!"
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_07",
-        "idiom": "hit the sack",
-        "meaning": "잠자리에 들다, 곯아떨어지러 가다",
-        "pronunciation": "[hɪt ðə sæk]",
-        "category": "일상회화",
-        "tags": ["수면", "피곤", "구어체"],
-        "origin": "과거에는 건초(hay)나 짚을 거친 자루(sack)에 채워 침대 매트리스로 썼는데, 잠들기 전 그 자루를 툭툭 치고 풀썩 쓰러져 자던 데서 유래되었습니다. (hit the hay도 동일)",
-        "example": "I'm running a marathon tomorrow morning, so I need to hit the sack right now.",
-        "exampleKo": "내일 아침에 마라톤을 뛰어야 해서, 지금 바로 자러 가야 해.",
-        "dialogue": {
-          "speakerA": "Do you want to watch another episode of this show?",
-          "speakerB": "I can barely keep my eyes open. I'm hitting the sack.",
-          "dialogueKo": "A: 이 드라마 다음 편 하나 더 볼래? / B: 눈이 감겨서 도저히 못 보겠어. 난 자러 갈게."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_08",
-        "idiom": "once in a blue moon",
-        "meaning": "극히 드물게, 가뭄에 콩 나듯",
-        "pronunciation": "[wʌns ɪn ə bluː muːn]",
-        "category": "일상회화",
-        "tags": ["빈도", "희귀", "감성"],
-        "origin": "한 달에 보름달이 두 번 뜰 때 두 번째 뜨는 달을 '블루문(Blue Moon)'이라 부르며, 평균 약 2.7년에 한 번만 일어날 정도로 매우 희귀한 현상인 데서 유래했습니다.",
-        "example": "He lives abroad, so he visits his hometown only once in a blue moon.",
-        "exampleKo": "그는 해외에 살아서, 고향에는 가뭄에 콩 나듯 아주 드물게 방문한다.",
-        "dialogue": {
-          "speakerA": "Do you go out clubbing on weekends?",
-          "speakerB": "Only once in a blue moon; I'm definitely a homebody.",
-          "dialogueKo": "A: 주말에 클럽 자주 놀러 가? / B: 진짜 가뭄에 콩 나듯 어쩌다 한번 가지; 난 완전 집돌이야."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_09",
-        "idiom": "pull someone's leg",
-        "meaning": "~에게 농담하다, 장난으로 속이다",
-        "pronunciation": "[pʊl ˈsʌmwʌnz leɡ]",
-        "category": "일상회화",
-        "tags": ["유머", "장난", "거짓말"],
-        "origin": "과거 런던 길거리의 소매치기들이 지나가는 사람의 다리를 걸어(pull leg) 넘어뜨리던 위험한 장난에서, 현대에는 가볍게 상대를 골려 먹는 장난을 의미하게 되었습니다.",
-        "example": "Stop worrying! I didn't actually lose your car keys; I was just pulling your leg.",
-        "exampleKo": "걱정 그만해! 네 차 키 진짜 잃어버린 거 아니야, 그냥 장난친 거라고.",
-        "dialogue": {
-          "speakerA": "Did the boss really say we all get a 50% bonus?",
-          "speakerB": "Don't get your hopes up—Mark was just pulling your leg.",
-          "dialogueKo": "A: 사장님이 진짜 전원 보너스 50% 주신다고 했어? / B: 김칫국 마시지 마—마크가 너 장난으로 놀린 거야."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_10",
-        "idiom": "speak of the devil",
-        "meaning": "호랑이도 제 말 하면 온다",
-        "pronunciation": "[spiːk əv ðə ˈdɛvəl]",
-        "category": "일상회화",
-        "tags": ["타이밍", "우연", "인기"],
-        "origin": "옛 영어 속담 'Speak of the Devil, and he doth appear'에서 유래하여 어떤 사람의 이야기를 하던 순간 그 사람이 나타났을 때 씁니다.",
-        "example": "Did you hear what happened to Mike yesterday? Oh, speak of the devil, here he comes!",
-        "exampleKo": "어제 마이크한테 무슨 일 있었는지 들었어? 어, 호랑이도 제 말 하면 온다더니, 저기 오네!",
-        "dialogue": {
-          "speakerA": "I wonder if Sarah finished the quarterly report.",
-          "speakerB": "Speak of the devil! Sarah just walked through the front door.",
-          "dialogueKo": "A: 사라가 분기 보고서 다 끝냈는지 궁금하네. / B: 호랑이도 제 말 하면 온다더니! 사라가 방금 들어오네."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_11",
-        "idiom": "cost an arm and a leg",
-        "meaning": "가격이 터무니없이 비싸다, 등골이 휠 정도로 돈이 들다",
-        "pronunciation": "[kɔːst ən ɑːrm ənd ə leɡ]",
-        "category": "일상회화",
-        "tags": ["가격", "소비", "과장"],
-        "origin": "자신의 팔과 다리를 내어주어야 할 만큼 값비싸고 귀중한 대가를 치른다는 과장 표현입니다.",
-        "example": "I would love to buy that electric sports car, but it costs an arm and a leg.",
-        "exampleKo": "저 전기 스포츠카 정말 사고 싶지만, 가격이 너무 터무니없이 비싸.",
-        "dialogue": {
-          "speakerA": "Where did you get that designer watch?",
-          "speakerB": "It was a gift from my uncle. It would've cost me an arm and a leg to buy it myself!",
-          "dialogueKo": "A: 그 명품 시계 어디서 났어? / B: 삼촌한테 선물 받았어. 내 돈 주고 샀으면 등골 휠 뻔했어!"
-        },
-        "status": "learning",
-        "favorite": true
-      },
-      {
-        "id": "idiom_12",
-        "idiom": "see eye to eye",
-        "meaning": "의견이 완전히 일치하다, 뜻이 통하다",
-        "pronunciation": "[siː aɪ tuː aɪ]",
-        "category": "일상회화",
-        "tags": ["동의", "관계", "협력"],
-        "origin": "두 사람이 시선의 높이를 맞추어 같은 대상을 똑같은 관점으로 바라본다는 뜻에서 비롯되었습니다.",
-        "example": "My business partner and I don't always see eye to eye, but we resolve conflicts professionally.",
-        "exampleKo": "내 사업 파트너와 나는 매번 의견이 딱 들어맞지는 않지만, 갈등을 프로답게 해결합니다.",
-        "dialogue": {
-          "speakerA": "Did the committee approve your new project proposal?",
-          "speakerB": "Surprisingly yes! Everyone saw eye to eye on the budget allocation.",
-          "dialogueKo": "A: 위원회에서 너의 새 프로젝트 제안서 승인해 줬어? / B: 놀랍게도 응! 예산 배분에 다들 의견이 일치했어."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_16",
-        "idiom": "get down to business",
-        "meaning": "본격적인 본론/업무에 들어가다",
-        "pronunciation": "[ɡɛt daʊn tuː ˈbɪznəs]",
-        "category": "비즈니스",
-        "tags": ["회의", "효율", "착수"],
-        "origin": "사교적인 스몰토크(small talk)를 마치고 회의의 본질적인 핵심 안건(business)으로 몸과 마음을 숙여 집중하자는 의미입니다.",
-        "example": "Now that the coffee break is over, let's get down to business and review the quarterly numbers.",
-        "exampleKo": "커피 브레이크가 끝났으니, 이제 본론으로 들어가서 이번 분기 실적 수치를 검토합시다.",
-        "dialogue": {
-          "speakerA": "Did everyone receive the agenda hand-out?",
-          "speakerB": "Yes. Let's get down to business so we can finish before noon.",
-          "dialogueKo": "A: 다들 안건 유인물 받으셨나요? / B: 네. 12시 전에 끝낼 수 있게 곧바로 본론으로 들어갑시다."
-        },
-        "status": "learning",
-        "favorite": true
-      },
-      {
-        "id": "idiom_17",
-        "idiom": "touch base",
-        "meaning": "(근황이나 진행 상황을 확인차) 가볍게 연락하다",
-        "pronunciation": "[tʌtʃ beɪs]",
-        "category": "비즈니스",
-        "tags": ["연락", "팔로업", "이메일"],
-        "origin": "야구 경기에서 주자가 다음 루로 가기 전에 베이스를 살짝 터치(touch base)하여 세이프 여부를 확인하는 동작에서 유래했습니다.",
-        "example": "I'm just calling to touch base regarding our meeting scheduled for next Thursday.",
-        "exampleKo": "다음 주 목요일로 예정된 미팅 건 확인차 가볍게 연락드렸습니다.",
-        "dialogue": {
-          "speakerA": "Have you heard back from the potential client?",
-          "speakerB": "Not yet. I'll touch base with their procurement team tomorrow morning.",
-          "dialogueKo": "A: 잠재 고객사에서 피드백 왔어? / B: 아직. 내일 아침에 상황 확인차 연락해 볼게."
-        },
-        "status": "learning",
-        "favorite": true
-      },
-      {
-        "id": "idiom_18",
-        "idiom": "back to the drawing board",
-        "meaning": "처음부터 다시 시작하다, 원점으로 돌아가다",
-        "pronunciation": "[bæk tuː ðə ˈdrɔːɪŋ bɔːrd]",
-        "category": "비즈니스",
-        "tags": ["재도전", "기획", "피드백"],
-        "origin": "엔지니어가 설계도면 판(drawing board)에 공들여 그린 설계가 모의실험에서 실패했을 때 백지 도면판으로 되돌아가던 데서 유래했습니다.",
-        "example": "The prototype completely failed the waterproof test, so it's back to the drawing board for our team.",
-        "exampleKo": "프로토타입이 방수 테스트에서 완전히 탈락해서, 우리 팀은 원점에서 다시 시작해야 합니다.",
-        "dialogue": {
-          "speakerA": "The focus group disliked the new app UI completely.",
-          "speakerB": "Disappointing, but back to the drawing board! We'll simplify the navigation.",
-          "dialogueKo": "A: 포커스 그룹이 새 앱 UI를 완전히 혹평했어. / B: 아쉽지만 원점부터 다시 짜야지!"
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_19",
-        "idiom": "cut corners",
-        "meaning": "(비용·시간을 줄이려) 원칙을 건너뛰다, 날림으로 대충 하다",
-        "pronunciation": "[kʌt ˈkɔːrnərz]",
-        "category": "비즈니스",
-        "tags": ["품질", "경고", "지름길"],
-        "origin": "도로 모퉁이(corners)를 정석대로 돌지 않고 잔디밭을 가로질러 지름길로 가듯, 절차나 품질 기준을 날림으로 생략하는 행위를 뜻합니다.",
-        "example": "Never cut corners on factory safety procedures just to save a few dollars.",
-        "exampleKo": "단돈 몇 달러를 아끼겠다고 공장 안전 수칙을 대충 넘어가서는 결코 안 됩니다.",
-        "dialogue": {
-          "speakerA": "Can we launch the software by Friday if we skip the stress tests?",
-          "speakerB": "Absolutely not. Cutting corners now will destroy our company's reputation.",
-          "dialogueKo": "A: 부하 테스트를 건너뛰면 금요일까지 출시할 수 있을까요? / B: 절대 안 됩니다. 지금 날림으로 처리하면 회사 평판이 무너집니다."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_20",
-        "idiom": "burn the midnight oil",
-        "meaning": "밤늦게까지 야근하다, 밤샘 공부를 하다",
-        "pronunciation": "[bɜːrn ðə ˈmɪdnaɪt ɔɪl]",
-        "category": "비즈니스",
-        "tags": ["야근", "열정", "마감"],
-        "origin": "전기가 보급되기 전 야간에 일하기 위해 오일 램프(기름등)에 밤새 기름을 태우며 불을 밝혔던 것에서 탄생했습니다.",
-        "example": "The marketing department burned the midnight oil to prepare for tomorrow's international expo.",
-        "exampleKo": "마케팅팀은 내일 열리는 국제 엑스포를 준비하기 위해 어젯밤 늦게까지 야근을 불태웠다.",
-        "dialogue": {
-          "speakerA": "How did you manage to submit the contract ahead of time?",
-          "speakerB": "I had to burn the midnight oil yesterday, but it was worth it.",
-          "dialogueKo": "A: 계약서를 어떻게 마감 시간보다 일찍 제출했어? / B: 어제 밤늦게까지 야근해야 했지만, 보람 있었어."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_21",
-        "idiom": "think outside the box",
-        "meaning": "틀에서 벗어나 창의적으로 생각하다, 발상을 전환하다",
-        "pronunciation": "[θɪŋk ˌaʊtˈsaɪd ðə bɑːks]",
-        "category": "비즈니스",
-        "tags": ["창의성", "혁신", "기획"],
-        "origin": "9개의 점을 4개의 직선으로 손을 떼지 않고 잇는 퍼즐에서, 9개의 점으로 이루어진 상자(box) 테두리 바깥으로 선을 확장해야만 풀리는 데서 유래했습니다.",
-        "example": "To stand out in a saturated market, startups must think outside the box.",
-        "exampleKo": "포화된 시장에서 돋보이려면 스타트업들은 고정관념을 벗어나 창의적으로 생각해야 합니다.",
-        "dialogue": {
-          "speakerA": "Traditional banner ads are giving us almost zero clicks.",
-          "speakerB": "Then let's think outside the box and create an interactive mini-game instead.",
-          "dialogueKo": "A: 전통적인 배너 광고는 클릭률이 거의 제로야. / B: 그럼 틀을 깨고 대화형 미니게임을 대신 만들어보자."
-        },
-        "status": "learning",
-        "favorite": true
-      },
-      {
-        "id": "idiom_23",
-        "idiom": "on the same page",
-        "meaning": "(같은 서류를 보듯) 생각을 같이하다, 이해를 공유하다",
-        "pronunciation": "[ɑːn ðə seɪm peɪdʒ]",
-        "category": "비즈니스",
-        "tags": ["소통", "팀워크", "합의"],
-        "origin": "오케스트라나 회의에서 모든 참가자가 악보나 자료의 정확히 같은 쪽(same page)을 펼쳐놓고 동일한 지점을 응시하며 조화를 이루는 모습에서 유래했습니다.",
-        "example": "Before sending the contract to the client, let's meet quickly to ensure everyone is on the same page.",
-        "exampleKo": "고객사에게 계약서를 보내기 전에, 우리 모두 같은 내용을 공유하고 있는지 퀵 미팅을 합시다.",
-        "dialogue": {
-          "speakerA": "Did the engineering team agree with the new product roadmap?",
-          "speakerB": "Yes, we had a two-hour sync and we are finally all on the same page.",
-          "dialogueKo": "A: 엔지니어링팀이 새 제품 로드맵에 동의했어? / B: 응, 두 시간 싱크 미팅을 해서 마침내 모두 한마음으로 의견을 맞췄어."
-        },
-        "status": "learning",
-        "favorite": true
-      },
-      {
-        "id": "idiom_24",
-        "idiom": "in a nutshell",
-        "meaning": "한마디로 요약하면, 간단히 말해서",
-        "pronunciation": "[ɪn ə ˈnʌtʃɛl]",
-        "category": "비즈니스",
-        "tags": ["요약", "발표", "핵심"],
-        "origin": "작고 단단한 견과류 껍질(nutshell) 속에 쏙 들어갈 수 있을 정도로 핵심 내용만을 극도로 압축했다는 뜻입니다.",
-        "example": "In a nutshell, switching to cloud infrastructure reduced our operating costs by 40%.",
-        "exampleKo": "한마디로 요약하면, 클라우드 인프라로 전환하여 운영 비용을 40% 절감했습니다.",
-        "dialogue": {
-          "speakerA": "The 50-page security audit is too long to read right now.",
-          "speakerB": "In a nutshell, our servers are secure, but we need stricter password policies.",
-          "dialogueKo": "A: 50페이지짜리 보안 보고서는 지금 다 읽기엔 너무 길어. / B: 한마디로 요약하자면 서버는 안전한데 비밀번호 정책을 강화해야 한다는 거야."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_28",
-        "idiom": "bottom line",
-        "meaning": "핵심 요점, 최종 결론 / (재무) 최종 순이익",
-        "pronunciation": "[ˈbɑːtəm laɪn]",
-        "category": "비즈니스",
-        "tags": ["핵심", "실적", "결론"],
-        "origin": "회계 장부나 손익계산서(P&L)의 맨 마지막 밑줄(bottom line)에 최종 순수익(Net Profit)이 적히는 데서, '모든 부연 설명을 제친 가장 결정적인 결론'을 뜻하게 되었습니다.",
-        "example": "The bottom line is that we cannot launch this feature without hiring two more engineers.",
-        "exampleKo": "핵심 결론은 엔지니어 두 명을 더 채용하지 않고서는 이 기능을 출시할 수 없다는 것입니다.",
-        "dialogue": {
-          "speakerA": "There are so many variables and pros and cons to this merger.",
-          "speakerB": "What's the bottom line? Will it make us profitable next year?",
-          "dialogueKo": "A: 이번 합병엔 변수가 너무 많아요. / B: 핵심 요점만 말해봐요. 내년에 우리에게 수익을 가져다줄까요?"
-        },
-        "status": "learning",
-        "favorite": true
-      },
-      {
-        "id": "idiom_30",
-        "idiom": "cut to the chase",
-        "meaning": "서론은 건너뛰고 곧바로 본론으로 들어가다",
-        "pronunciation": "[kʌt tuː ðə tʃeɪs]",
-        "category": "비즈니스",
-        "tags": ["속도", "직설", "회의"],
-        "origin": "초기 무성영화 시절 관객이 가장 좋아하는 박진감 넘치는 추격신(chase)으로 바로 필름을 잘라 넘어가도록 감독이 지시한 데서 유래했습니다.",
-        "example": "We have an emergency board meeting in five minutes, so please cut to the chase.",
-        "exampleKo": "5분 뒤에 긴급 이사회가 있으니, 군더더기 빼고 바로 본론부터 말씀해 주세요.",
-        "dialogue": {
-          "speakerA": "Well, our journey had numerous logistical challenges...",
-          "speakerB": "Cut to the chase, John: did we hit the sales quota or not?",
-          "dialogueKo": "A: 음, 이번에 난관이 참 많았는데요... / B: 존, 서론은 건너뛰고 본론만 말해요. 목표치 달성했습니까?"
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_31",
-        "idiom": "blessing in disguise",
-        "meaning": "전화위복, 뜻밖의 좋은 일 (처음엔 불행인 줄 알았던 축복)",
-        "pronunciation": "[ˈblɛsɪŋ ɪn dɪsˈɡaɪz]",
-        "category": "감정·태도",
-        "tags": ["희망", "반전", "지혜"],
-        "origin": "축복(blessing)이 겉으로는 재앙이나 불행의 위장(disguise)을 뒤집어쓰고 찾아왔다는 의미의 문학적 통찰에서 비롯되었습니다.",
-        "example": "Missing that flight was a blessing in disguise; I met my future co-founder in the lounge.",
-        "exampleKo": "그 비행기를 놓친 게 전화위복이었어. 공항 라운지에서 미래의 공동 창업자를 만났거든.",
-        "dialogue": {
-          "speakerA": "I'm heartbroken that I didn't get that job offer.",
-          "speakerB": "Keep your chin up. Sometimes rejection is a blessing in disguise.",
-          "dialogueKo": "A: 그 일자리 최종 합격 못 해서 너무 마음이 찢어져. / B: 고개 들어. 때로는 거절당하는 게 나중에 더 큰 전화위복이 되기도 해."
-        },
-        "status": "learning",
-        "favorite": true
-      },
-      {
-        "id": "idiom_32",
-        "idiom": "take with a grain of salt",
-        "meaning": "곧이곧대로 믿지 않고 걸러서 듣다, 반신반의하다",
-        "pronunciation": "[teɪk wɪð ə ɡreɪn əv sɔːlt]",
-        "category": "감정·태도",
-        "tags": ["비판적사고", "주의", "소문"],
-        "origin": "고대 로마에서 해독제 처방전에 소금 한 알(grain of salt)을 함께 삼키면 독성을 완화해 몸을 보호할 수 있다고 적은 데서 유래했습니다.",
-        "example": "He tends to exaggerate his achievements, so take his stories with a grain of salt.",
-        "exampleKo": "그 사람은 자기 성과를 과장하는 경향이 있으니, 그 사람 말은 적당히 걸러서 들어야 해.",
-        "dialogue": {
-          "speakerA": "Social media rumors claim that company is going bankrupt tomorrow.",
-          "speakerB": "I would take that with a grain of salt until an official statement is released.",
-          "dialogueKo": "A: SNS 루머에선 그 회사가 내일 파산할 거래. / B: 공식 발표가 나오기 전까지는 적당히 걸러서 듣는 게 좋아."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_33",
-        "idiom": "through thick and thin",
-        "meaning": "좋을 때나 나쁠 때나, 온갖 고난을 무릅쓰고 한결같이",
-        "pronunciation": "[θruː θɪk ənd θɪn]",
-        "category": "감정·태도",
-        "tags": ["의리", "우정", "인내"],
-        "origin": "중세 영국에서 여행자가 빽빽하고 험한 가시덤불 숲(thick)과 트인 평지(thin)를 가리지 않고 꿋꿋이 나아가던 모습에서 유래했습니다.",
-        "example": "True best friends stay loyal to each other through thick and thin.",
-        "exampleKo": "진정한 친구는 비바람이 불든 날이 맑든 온갖 고난 속에서도 서로에게 한결같이 의리를 지킵니다.",
-        "dialogue": {
-          "speakerA": "How long have you and David been business partners?",
-          "speakerB": "Over twenty years! We stuck together through thick and thin.",
-          "dialogueKo": "A: 데이비드와 동업한 지 얼마나 됐어요? / B: 20년이 넘었죠! 좋을 때나 힘들 때나 온갖 역경을 함께 버텨냈습니다."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_34",
-        "idiom": "out of the blue",
-        "meaning": "마른하늘에 날벼락처럼, 갑작스럽게, 뜬금없이",
-        "pronunciation": "[aʊt əv ðə bluː]",
-        "category": "감정·태도",
-        "tags": ["돌발", "놀람", "예상밖"],
-        "origin": "'A bolt out of the blue(구름 한 점 없이 맑고 파란 하늘에서 내리치는 벼락)'라는 관용 표현에서 축약되었습니다.",
-        "example": "Out of the blue, my childhood friend texted me after fifteen years of silence.",
-        "exampleKo": "15년 동안 연락 한 번 없던 소꿉친구가 뜬금없이 마른하늘에 날벼락처럼 문자를 보냈어.",
-        "dialogue": {
-          "speakerA": "Did Mark give you any advance notice before quitting?",
-          "speakerB": "None at all! He handed in his resignation totally out of the blue.",
-          "dialogueKo": "A: 마크가 그만두기 전에 미리 언질을 준 적이 있어? / B: 전혀! 완전 뜬금없이 사직서를 불쑥 내밀었어."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_37",
-        "idiom": "on the fence",
-        "meaning": "결정을 못 내리고 망설이는, 중립적인 입장을 취하는",
-        "pronunciation": "[ɑːn ðə fɛns]",
-        "category": "감정·태도",
-        "tags": ["고민", "결정장애", "중립"],
-        "origin": "울타리(fence) 위에 아슬아슬하게 걸터앉아 어느 쪽 마당으로 뛰어내릴지 결정을 내리지 못하고 좌우를 두리번거리는 모습에서 유래했습니다.",
-        "example": "I'm still on the fence about whether to buy an electric vehicle or a hybrid.",
-        "exampleKo": "전기차를 살지 하이브리드를 살지 아직도 결정을 못 내리고 망설이고 있어.",
-        "dialogue": {
-          "speakerA": "Are you joining the company ski retreat next month?",
-          "speakerB": "I'm still on the fence; it depends on how much workload I have.",
-          "dialogueKo": "A: 다음 달 회사 스키 워크숍 참여해? / B: 아직 고민 중이야. 일감이 얼마나 몰릴지에 달렸어."
-        },
-        "status": "learning",
-        "favorite": true
-      },
-      {
-        "id": "idiom_39",
-        "idiom": "hit the nail on the head",
-        "meaning": "정곡을 찌르다, 핵심을 정확히 맞히다",
-        "pronunciation": "[hɪt ðə neɪl ɑːn ðə hɛd]",
-        "category": "감정·태도",
-        "tags": ["정확", "공감", "통찰"],
-        "origin": "망치로 못의 몸통이 아닌 둥근 머리(nail head)를 정확하게 내리쳐 단번에 단단히 박아 넣는 명쾌한 솜씨에서 비롯되었습니다.",
-        "example": "When the analyst pointed out our slow customer service, she hit the nail on the head.",
-        "exampleKo": "그 애널리스트가 우리의 느린 고객 서비스를 지적했을 때, 정말 정곡을 정확히 찔렀습니다.",
-        "dialogue": {
-          "speakerA": "I think user retention is dropping because the signup flow has too many steps.",
-          "speakerB": "You hit the nail on the head! That's exactly what user feedback indicates.",
-          "dialogueKo": "A: 회원가입 단계가 너무 많아서 이탈하는 것 같아요. / B: 정곡을 찔렀어! 사용자 피드백도 정확히 그걸 가리켜."
-        },
-        "status": "learning",
-        "favorite": true
-      },
-      {
-        "id": "idiom_41",
-        "idiom": "barking up the wrong tree",
-        "meaning": "엉뚱한 사람을 짚다, 헛다리를 짚다",
-        "pronunciation": "[ˈbɑːrkɪŋ ʌp ðə rɔːŋ triː]",
-        "category": "감정·태도",
-        "tags": ["오해", "착각", "추리"],
-        "origin": "사냥개가 너구리가 올라간 나무가 아니라 엉뚱한 옆 나무 밑에서 목청껏 짖어대던(barking) 웃지 못할 실수에서 유래했습니다.",
-        "example": "If you think I was the one who deleted your spreadsheet, you're barking up the wrong tree.",
-        "exampleKo": "내가 네 스프레드시트를 지웠다고 생각한다면, 넌 완전히 헛다리를 짚은 거야.",
-        "dialogue": {
-          "speakerA": "Why are you grilling me about who leaked the confidential slide?",
-          "speakerB": "I apologize, I realize now I was barking up the wrong tree.",
-          "dialogueKo": "A: 기밀 슬라이드를 누가 유출했는지 왜 나를 추궁해? / B: 미안해, 내가 헛다리를 짚었다는 걸 이제 알았어."
-        },
-        "status": "learning",
-        "favorite": false
-      },
-      {
-        "id": "idiom_43",
-        "idiom": "cry over spilled milk",
-        "meaning": "이미 엎질러진 물을 두고 후회하다, 지나간 일로 한탄하다",
-        "pronunciation": "[kraɪ ˈoʊvər spɪld mɪlk]",
-        "category": "감정·태도",
-        "tags": ["후회", "극복", "조언"],
-        "origin": "바닥에 엎질러진 우유는 주워 담을 수 없으니 지나간 일로 자책해 봐야 아무 소용없다는 격언입니다.",
-        "example": "We lost the deal, but there's no use crying over spilled milk; let's focus on the next client.",
-        "exampleKo": "계약은 놓쳤지만 이미 엎질러진 물이야. 자책 그만하고 다음 고객에 집중하자.",
-        "dialogue": {
-          "speakerA": "I accidentally dropped and shattered my expensive camera lens!",
-          "speakerB": "I know it hurts, but don't cry over spilled milk. Let's see if insurance covers it.",
-          "dialogueKo": "A: 카메라 렌즈를 실수로 떨어뜨려서 박살 냈어! / B: 속상하겠지만 이미 일어난 일인걸. 보험 처리가 되는지 보자."
-        },
-        "status": "learning",
-        "favorite": false
-      }
-    ];
+  {
+    "id": "doc_01",
+    "idiom": "in light of",
+    "meaning": "~에 비추어 볼 때, ~을 고려하여",
+    "pronunciation": "[ɪn laɪt əv]",
+    "category": "논리·전개",
+    "tags": [
+      "독해빈출",
+      "판단근거",
+      "보고서",
+      "수능/토익"
+    ],
+    "origin": "새로운 정보나 증거의 '빛(light)'을 비추어 상황을 재평가한다는 뜻으로, 학술 논문이나 비즈니스 보고서에서 정책·결론의 수정 근거를 제시할 때 필수적으로 쓰입니다.",
+    "example": "In light of recent economic volatility, central banks decided to hold interest rates steady.",
+    "exampleKo": "최근의 경제 변동성을 고려하여, 중앙은행들은 금리를 동결하기로 결정했습니다.",
+    "dialogue": {
+      "speakerA": "Should we proceed with the overseas plant expansion as scheduled?",
+      "speakerB": "In light of rising supply chain costs, it would be prudent to delay the project.",
+      "dialogueKo": "A: 해외 공장 증설을 예정대로 진행해야 할까요? / B: 공급망 비용 상승을 감안할 때 프로젝트를 연기하는 것이 현명합니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_02",
+    "idiom": "in terms of",
+    "meaning": "~의 관점에서, ~의 측면에서 (분석·비교 기준)",
+    "pronunciation": "[ɪn tɜːrmz əv]",
+    "category": "논리·전개",
+    "tags": [
+      "기준제시",
+      "학술논문",
+      "필수독해"
+    ],
+    "origin": "수학의 '항(term)'이나 특정 표현 체계를 뜻하는 단어에서 유래하여, 비교나 분석을 진행할 때 평가의 구체적인 기준(관점)을 한정 짓는 문맥 연결사입니다.",
+    "example": "The two renewable energy models are nearly identical in terms of annual maintenance costs.",
+    "exampleKo": "그 두 가지 신재생에너지 모델은 연간 유지보수 비용이라는 측면에서 거의 동일합니다.",
+    "dialogue": {
+      "speakerA": "How does our proposed software compare with industry leaders?",
+      "speakerB": "In terms of data processing speed, our platform clearly outperforms them.",
+      "dialogueKo": "A: 저희 제안 소프트웨어가 업계 선도 제품들과 비교하면 어떤가요? / B: 데이터 처리 속도 면에서 저희 플랫폼이 확실히 우월합니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_03",
+    "idiom": "with regard to",
+    "meaning": "~에 관하여, ~에 대해서는 (= concerning, regarding)",
+    "pronunciation": "[wɪð rɪˈɡɑːrd tuː]",
+    "category": "논리·전개",
+    "tags": [
+      "주제전환",
+      "공식문서",
+      "토익/공무원"
+    ],
+    "origin": "시선을 특정 주제로 돌려(regard) 주목한다는 격식체 표현으로, 공문서나 학술 보고서에서 논의할 세부 안건을 제시할 때 자주 문두에 쓰입니다.",
+    "example": "With regard to customer privacy, stricter regulations have been introduced this fiscal year.",
+    "exampleKo": "고객 개인정보 보호에 관하여, 이번 회계연도에 한층 강화된 규정이 도입되었습니다.",
+    "dialogue": {
+      "speakerA": "Are there any remaining concerns with regard to intellectual property?",
+      "speakerB": "Our legal team has verified all patent rights, so there are no conflicts.",
+      "dialogueKo": "A: 지식재산권과 관련하여 남아있는 우려 사항이 있나요? / B: 법무팀에서 모든 특허권을 검증하여 분쟁 요소가 없습니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_04",
+    "idiom": "by virtue of",
+    "meaning": "~의 덕분에, ~의 힘으로 (~에 의하여)",
+    "pronunciation": "[baɪ ˈvɜːrtʃuː əv]",
+    "category": "논리·전개",
+    "tags": [
+      "원인결과",
+      "자격근거",
+      "학술논문"
+    ],
+    "origin": "'virtue'의 본래 고어적 의미인 '효능, 잠재적 힘(power)'에서 기인하여, 어떤 직위나 자격, 고유한 속성이 지닌 권능에 의해 특정 결과가 가능함을 설명합니다.",
+    "example": "By virtue of its strategic geographic location, Singapore emerged as a leading global trade hub.",
+    "exampleKo": "전략적인 지리적 위치 덕분에 싱가포르는 세계 굴지의 글로벌 무역 허브로 부상했습니다.",
+    "dialogue": {
+      "speakerA": "How was the startup able to secure immediate institutional funding?",
+      "speakerB": "By virtue of their groundbreaking patented AI algorithm.",
+      "dialogueKo": "A: 그 스타트업은 어떻게 즉각적인 기관 투자를 유치할 수 있었나요? / B: 독보적인 특허 AI 알고리즘의 힘 덕분입니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_05",
+    "idiom": "in accordance with",
+    "meaning": "~에 부합하여, ~와 일치하여, ~에 따라",
+    "pronunciation": "[ɪn əˈkɔːrdns wɪð]",
+    "category": "논리·전개",
+    "tags": [
+      "규정준수",
+      "법률/계약",
+      "수능/토익"
+    ],
+    "origin": "라틴어 accordare(조화시키다)에서 파생된 표현으로, 규정(regulations), 계약(contract), 국제 표준(standards)을 엄격히 준수하고 있음을 기술하는 공식 표현입니다.",
+    "example": "All financial statements were audited in accordance with international accounting standards.",
+    "exampleKo": "모든 재무제표는 국제회계기준에 부합하여 철저히 감사되었습니다.",
+    "dialogue": {
+      "speakerA": "Has the new clinical trial protocol been officially approved?",
+      "speakerB": "Yes, every procedure is designed in accordance with FDA safety guidelines.",
+      "dialogueKo": "A: 새로운 임상시험 프로토콜이 공식 승인되었습니까? / B: 네, 모든 절차가 FDA 안전 지침에 따라 설계되었습니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_06",
+    "idiom": "bring about",
+    "meaning": "~을 초래하다, 야기하다 (= cause, lead to, trigger)",
+    "pronunciation": "[brɪŋ əˈbaʊt]",
+    "category": "논리·전개",
+    "tags": [
+      "인과관계",
+      "변화유발",
+      "독해빈출"
+    ],
+    "origin": "배의 항로를 한 방향으로 '돌려놓다(bring about)'는 항해술에서 비롯되어, 역사적·기술적·사회적 거대한 변화나 혁신적 결과를 이끌어내는 인과관계를 나타냅니다.",
+    "example": "The rapid proliferation of digital communication brought about profound social transformations.",
+    "exampleKo": "디지털 통신의 급격한 확산은 사회 전반에 심오한 구조적 변화를 초래했습니다.",
+    "dialogue": {
+      "speakerA": "What factors brought about the dramatic turnaround in the firm's profitability?",
+      "speakerB": "Aggressive cost restructuring and expansion into emerging markets.",
+      "dialogueKo": "A: 회사의 수익성이 극적으로 반등한 요인은 무엇이었나요? / B: 공격적인 비용 구조조정과 신흥 시장 진출 덕분입니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_07",
+    "idiom": "stem from",
+    "meaning": "~에서 기인하다, 유래하다, 뿌리를 두다",
+    "pronunciation": "[stɛm frʌm]",
+    "category": "논리·전개",
+    "tags": [
+      "원인규명",
+      "학술연구",
+      "필수독해"
+    ],
+    "origin": "식물의 줄기(stem)가 뿌리에서 뻗어나오듯, 특정 사회적 문제나 질병, 현상의 근본적 원인이 어디에 뿌리를 두고 있는지를 인과적으로 추적하는 핵심 표현입니다.",
+    "example": "Many contemporary environmental crises stem from unsustainable industrial consumption patterns.",
+    "exampleKo": "많은 현대 환경 위기는 지속 불가능한 산업적 소비 패턴에서 기인합니다.",
+    "dialogue": {
+      "speakerA": "Where do these persistent communication breakdowns stem from?",
+      "speakerB": "They largely stem from a lack of transparent reporting channels between departments.",
+      "dialogueKo": "A: 이러한 지속적인 소통 단절은 어디에서 비롯된 것인가요? / B: 부서 간 투명한 보고 체계의 부재에서 주로 기인합니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_08",
+    "idiom": "give rise to",
+    "meaning": "~을 낳다, 발생시키다, 유발하다",
+    "pronunciation": "[ɡɪv raɪz tuː]",
+    "category": "논리·전개",
+    "tags": [
+      "파급효과",
+      "논문빈출",
+      "원인결과"
+    ],
+    "origin": "어떤 현상이 표면 위로 '솟아오르게(rise)' 자리를 내어준다는 뜻으로, 새로운 논쟁(controversy), 가설(hypothesis), 또는 부작용을 촉발할 때 학술문맥에서 자주 쓰입니다.",
+    "example": "Rapid urban expansion has given rise to acute housing shortages in developing countries.",
+    "exampleKo": "급격한 도시 팽창은 개발도상국에서 극심한 주택 부족 현상을 유발했습니다.",
+    "dialogue": {
+      "speakerA": "Did the sudden regulatory shift give rise to market panic?",
+      "speakerB": "Fortunately not; clear communication from regulators mitigated widespread concern.",
+      "dialogueKo": "A: 갑작스러운 규제 변화가 시장의 패닉을 유발했나요? / B: 다행히 규제 당국의 명확한 소통 덕분에 광범위한 불안을 완화했습니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_09",
+    "idiom": "account for",
+    "meaning": "1. ~을 설명하다 2. (비율·수치를) 차지하다 3. ~의 원인이 되다",
+    "pronunciation": "[əˈkaʊnt fɔːr]",
+    "category": "논리·전개",
+    "tags": [
+      "도표독해",
+      "수능1위",
+      "토익필수"
+    ],
+    "origin": "통계 및 도표 독해 지문에서 절대 빠지지 않는 최고 빈출 어휘. 수치와 함께 쓰이면 '차지하다(= make up, comprise)', 원인 문맥에서는 '해명하다'로 해석됩니다.",
+    "example": "Renewable energy sources now account for over thirty percent of total electricity generation.",
+    "exampleKo": "신재생에너지원은 현재 전체 전력 생산량의 30퍼센트 이상을 차지하고 있습니다.",
+    "dialogue": {
+      "speakerA": "How can researchers account for the statistical discrepancy in the control group?",
+      "speakerB": "Uncontrolled environmental variables appear to account for the variance.",
+      "dialogueKo": "A: 연구진은 대조군의 통계적 불일치를 어떻게 설명할 수 있나요? / B: 통제되지 않은 환경 변수들이 해당 편차의 원인이 된 것으로 보입니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_10",
+    "idiom": "stand to reason",
+    "meaning": "이치에 맞다, 당연하다, 논리적으로 합당하다",
+    "pronunciation": "[stænd tuː ˈriːzn]",
+    "category": "논리·전개",
+    "tags": [
+      "논리적귀결",
+      "주장근거",
+      "학술논문"
+    ],
+    "origin": "어떤 진술이나 가설이 이성(reason)과 논리적 시험대 앞에 굳건히 버티고 설 수 있다는 데서, '누가 보아도 반박할 수 없이 명백하다'는 논리적 결론을 내릴 때 사용됩니다.",
+    "example": "It stands to reason that prolonged exposure to chronic stress impairs cognitive performance.",
+    "exampleKo": "만성 스트레스에 장기간 노출되는 것이 인지 기능을 저하시킨다는 것은 논리적으로 당연합니다.",
+    "dialogue": {
+      "speakerA": "Do you believe customer satisfaction will climb after these UI upgrades?",
+      "speakerB": "It stands to reason; intuitive navigation inevitably reduces user friction.",
+      "dialogueKo": "A: 이번 UI 개선 이후 고객 만족도가 상승할 것으로 보십니까? / B: 직관적인 내비게이션은 필연적으로 사용자 불편을 줄여주므로 당연한 결과입니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_11",
+    "idiom": "in the wake of",
+    "meaning": "~의 결과로, ~의 여파로, ~의 뒤를 이어",
+    "pronunciation": "[ɪn ðə weɪk əv]",
+    "category": "논리·전개",
+    "tags": [
+      "사건여파",
+      "뉴스사설",
+      "경제분석"
+    ],
+    "origin": "항해하는 배가 지나간 자리에 물결의 항적(wake)이 길게 남듯, 전쟁·위기·재난 등 중대한 역사적 사건이 지나간 뒤 수반되는 연쇄적 영향을 설명할 때 쓰입니다.",
+    "example": "In the wake of the 2008 global financial crisis, governments overhauled regulatory oversight.",
+    "exampleKo": "2008년 글로벌 금융위기의 여파로 각국 정부는 금융 규제 감독 체계를 전면 개편했습니다.",
+    "dialogue": {
+      "speakerA": "Consumer spending dropped sharply in the wake of inflation spikes.",
+      "speakerB": "Yes, households are prioritizing essential commodities over discretionary goods.",
+      "dialogueKo": "A: 인플레이션 급등의 여파로 소비자 지출이 급격히 위축되었습니다. / B: 맞습니다, 가계들이 재량적 소비재보다 필수 생필품을 우선시하고 있습니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_12",
+    "idiom": "at the expense of",
+    "meaning": "~을 희생하여, ~을 대가로 (= at the cost of)",
+    "pronunciation": "[æt ði ɪkˈspɛns əv]",
+    "category": "논리·전개",
+    "tags": [
+      "상충관계",
+      "비판적독해",
+      "수능/토플"
+    ],
+    "origin": "어떤 목표를 달성하기 위해 다른 중요한 가치(환경, 건강, 안전 등)를 대가(expense)로 지불하고 희생시킨다는 상충 관계(trade-off)를 꼬집을 때 빈출합니다.",
+    "example": "Economic growth should not be pursued at the expense of ecological preservation.",
+    "exampleKo": "경제 성장이 생태계 보전이라는 중요한 가치를 희생하면서까지 추구되어서는 안 됩니다.",
+    "dialogue": {
+      "speakerA": "The firm doubled quarterly output by enforcing extreme overtime shifts.",
+      "speakerB": "They achieved record revenue, but at the expense of employee well-being.",
+      "dialogueKo": "A: 그 회사는 극단적인 야근을 강요하며 분기 생산량을 두 배로 늘렸습니다. / B: 기록적인 매출을 달성했지만 직원들의 건강을 희생시킨 대가였죠."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_13",
+    "idiom": "to say nothing of",
+    "meaning": "~은 말할 것도 없고, ~은 물론이거니와 (= not to mention)",
+    "pronunciation": "[tuː seɪ ˈnʌθɪŋ əv]",
+    "category": "논리·전개",
+    "tags": [
+      "강조첨가",
+      "독해빈출",
+      "학술어휘"
+    ],
+    "origin": "이미 언급한 사실만으로도 엄청난데, 그 뒤에 따르는 대상은 굳이 언급할 필요도 없이 당연히 포함된다는 뉘앙스로 논지를 한 단계 강력하게 점층할 때 쓰입니다.",
+    "example": "The disaster disrupted local transportation, to say nothing of the millions in property damage.",
+    "exampleKo": "그 재난은 수백만 달러의 재산 피해는 말할 것도 없고, 지역 교통망마저 완전히 마비시켰습니다.",
+    "dialogue": {
+      "speakerA": "The new regulations will strain smaller suppliers' compliance budgets.",
+      "speakerB": "Indeed, to say nothing of the severe administrative delays it will induce.",
+      "dialogueKo": "A: 새로운 규정은 중소 공급업체들의 규정 준수 예산에 상당한 부담을 줄 것입니다. / B: 맞습니다, 그로 인해 초래될 극심한 행정적 지연은 말할 것도 없고요."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_14",
+    "idiom": "in conjunction with",
+    "meaning": "~와 결합하여, ~와 연계하여, 공동으로",
+    "pronunciation": "[ɪn kənˈdʒʌŋkʃn wɪð]",
+    "category": "논리·전개",
+    "tags": [
+      "협력연계",
+      "공동연구",
+      "의학/과학"
+    ],
+    "origin": "천문학에서 두 행성이 하늘에서 겹쳐 보이는 '합(conjunction)'에서 유래하여, 둘 이상의 약물·제도·기관이 시너지 효과를 내기 위해 결합할 때 쓰입니다.",
+    "example": "Dietary interventions are most effective when implemented in conjunction with aerobic exercise.",
+    "exampleKo": "식이요법 중재는 유산소 운동과 결합하여 시행될 때 가장 뛰어난 효과를 발휘합니다.",
+    "dialogue": {
+      "speakerA": "How is the university funding this massive particle physics laboratory?",
+      "speakerB": "The research facility was constructed in conjunction with private aerospace firms.",
+      "dialogueKo": "A: 대학교가 이 거대한 입자물리학 실험실 연구비를 어떻게 조달하고 있나요? / B: 민간 항공우주 기업들과 연계하여 공동으로 연구 시설을 건립했습니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_15",
+    "idiom": "for the sake of",
+    "meaning": "~을 위하여, ~의 이익/목적을 도모하여",
+    "pronunciation": "[fɔːr ðə seɪk əv]",
+    "category": "논리·전개",
+    "tags": [
+      "목적의도",
+      "정책목표",
+      "필수독해"
+    ],
+    "origin": "고대 영어 sacu(원인, 동기, 소송)에서 유래하여, 단순한 이기적 욕심이 아닌 더 큰 대의명분이나 가치를 위해 어떤 조치를 단행함을 나타냅니다.",
+    "example": "Societies must curb carbon emissions today for the sake of future generations.",
+    "exampleKo": "사회는 미래 세대의 안녕을 위하여 오늘날 탄소 배출량을 감축해야만 합니다.",
+    "dialogue": {
+      "speakerA": "Why did the committee compromise on the environmental bill?",
+      "speakerB": "They made concessions for the sake of achieving bipartisan consensus.",
+      "dialogueKo": "A: 위원회는 왜 환경 법안에서 타협을 택했습니까? / B: 초당적인 합의 도출을 위하여 일정 부분 양보를 단행했습니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_16",
+    "idiom": "gain traction",
+    "meaning": "견인력을 얻다, 호응을 얻기 시작하다, 본격적인 탄력을 받다",
+    "pronunciation": "[ɡeɪn ˈtrækʃn]",
+    "category": "경제·비즈니스",
+    "tags": [
+      "시장확산",
+      "트렌드",
+      "경제지문"
+    ],
+    "origin": "바퀴가 지면에 헛돌지 않고 마찰력(traction)을 확보해 앞으로 힘차게 굴러가듯, 새로운 신기술이나 정책 아이디어가 대중과 시장의 지지를 얻어 확산되는 상태를 뜻합니다.",
+    "example": "Electric vehicles struggled initially, but they quickly gained traction as battery costs plummeted.",
+    "exampleKo": "전기차는 초기에 고전했으나, 배터리 비용이 급락하면서 본격적인 시장 견인력을 얻었습니다.",
+    "dialogue": {
+      "speakerA": "Is our subscription model finally resonating with enterprise clients?",
+      "speakerB": "Yes, our enterprise tier has gained tremendous traction over the past two quarters.",
+      "dialogueKo": "A: 저희 구독 모델이 마침내 기업 고객들에게 호응을 얻고 있나요? / B: 네, 지난 2개 분기 동안 엔터프라이즈 등급이 엄청난 탄력을 받았습니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_17",
+    "idiom": "scale back",
+    "meaning": "(규모·생산·예산을) 축소하다, 감축하다",
+    "pronunciation": "[skeɪl bæk]",
+    "category": "경제·비즈니스",
+    "tags": [
+      "비용절감",
+      "구조조정",
+      "비즈니스"
+    ],
+    "origin": "설계 도면의 축척(scale)을 줄이듯, 경기 침체나 실적 부진에 직면한 조직이 운영 규모나 자본 지출을 긴축할 때 사용하는 대표적 경영 어휘입니다.",
+    "example": "Facing high borrowing costs, commercial real estate developers scaled back planned investments.",
+    "exampleKo": "높은 대출 금리에 직면한 상업용 부동산 개발업체들은 계획했던 투자 규모를 대폭 축소했습니다.",
+    "dialogue": {
+      "speakerA": "Will the automaker close factory lines due to microchip shortages?",
+      "speakerB": "They won't shut down completely, but they must scale back production by twenty percent.",
+      "dialogueKo": "A: 반도체 칩 부족으로 자동차 제조사가 공장 라인을 폐쇄할 예정인가요? / B: 완전히 닫지는 않겠지만 생산량을 20% 축소해야 합니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_18",
+    "idiom": "ramp up",
+    "meaning": "(생산·공급·투자를) 대폭 늘리다, 강화하다",
+    "pronunciation": "[ræmp ʌp]",
+    "category": "경제·비즈니스",
+    "tags": [
+      "생산확대",
+      "공급망",
+      "신문빈출"
+    ],
+    "origin": "비탈길이나 경사로(ramp)를 타고 가파르게 위로 치고 올라가듯, 급증하는 수요를 충족시키기 위해 공장 가동률이나 인력을 공격적으로 투입하는 상황을 묘사합니다.",
+    "example": "Pharmaceutical companies ramped up vaccine manufacturing capacities to unprecedented levels.",
+    "exampleKo": "제약사들은 백신 제조 능력을 전례 없는 수준으로 대폭 증대시켰습니다.",
+    "dialogue": {
+      "speakerA": "Can our servers withstand the anticipated spike during Black Friday?",
+      "speakerB": "DevOps has already ramped up cloud server capacity to prevent outages.",
+      "dialogueKo": "A: 블랙프라이데이의 예상 트래픽 급증을 서버가 견딜 수 있을까요? / B: 데브옵스 팀에서 장애를 방지하기 위해 클라우드 용량을 이미 대폭 증설했습니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_19",
+    "idiom": "phase out",
+    "meaning": "단계적으로 폐지하다, 점진적으로 중단하다",
+    "pronunciation": "[feɪz aʊt]",
+    "category": "경제·비즈니스",
+    "tags": [
+      "정책폐지",
+      "규제변화",
+      "보고서"
+    ],
+    "origin": "시장 충격을 완화하기 위해 한 번에 단절하지 않고 일정한 단계(phase)와 유예 기간을 거쳐 서서히 퇴출시키는 제도적 전환을 뜻합니다. (반의어: phase in - 단계적 도입)",
+    "example": "The European Union agreed to phase out sales of internal combustion engines by 2035.",
+    "exampleKo": "유럽연합은 2035년까지 내연기관 차량의 판매를 단계적으로 퇴출하기로 합의했습니다.",
+    "dialogue": {
+      "speakerA": "Are legacy database servers still maintained across the company?",
+      "speakerB": "We are gradually phasing them out in favor of secure cloud architectures.",
+      "dialogueKo": "A: 기존 레거시 데이터베이스 서버가 아직 사내에서 유지되고 있나요? / B: 보안 클라우드 아키텍처로 대체하며 단계적으로 폐지하는 중입니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_20",
+    "idiom": "fall short of",
+    "meaning": "(기대·목표·기준에) 미치지 못하다, 미달하다",
+    "pronunciation": "[fɔːl ʃɔːrt əv]",
+    "category": "경제·비즈니스",
+    "tags": [
+      "실적부진",
+      "평가",
+      "경제뉴스"
+    ],
+    "origin": "활이나 총알이 과녁에 도달하지 못하고 그 앞에 툭 떨어지는(fall short) 모습에서 유래하여, 기업 실적이 시장 컨센서스나 안전 기준에 못 미칠 때 매일 쓰이는 표현입니다.",
+    "example": "Third-quarter corporate earnings fell short of Wall Street analysts' aggressive expectations.",
+    "exampleKo": "3분기 기업 실적은 월가 애널리스트들의 공격적인 기대치에 미치지 못했습니다.",
+    "dialogue": {
+      "speakerA": "Did the fiscal stimulus package achieve its employment targets?",
+      "speakerB": "Unfortunately, job creation numbers fell well short of government projections.",
+      "dialogueKo": "A: 재정 부양책이 고용 목표를 달성했습니까? / B: 유감스럽게도 일자리 창출 수치는 정부 예상치에 크게 미달했습니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_21",
+    "idiom": "level the playing field",
+    "meaning": "공정한 경쟁 환경을 조성하다, 출발선을 균등하게 맞추다",
+    "pronunciation": "[ˈlɛvl ðə ˈpleɪɪŋ fiːld]",
+    "category": "경제·비즈니스",
+    "tags": [
+      "공정경쟁",
+      "독점규제",
+      "사설논평"
+    ],
+    "origin": "기울어진 운동장(slanted field)에서 경기를 하면 불공평하므로, 운동장 바닥을 평평하게(level) 다듬어 실력만으로 겨루게 한다는 스포츠 비유입니다.",
+    "example": "Antitrust regulations aim to level the playing field between tech giants and innovative startups.",
+    "exampleKo": "반독점 규제의 목적은 빅테크 공룡과 혁신 스타트업 간의 공정한 경쟁 환경을 조성하는 데 있습니다.",
+    "dialogue": {
+      "speakerA": "Why are independent retailers lobbying for digital sales tax fairness?",
+      "speakerB": "To level the playing field against foreign e-commerce platforms operating without tax.",
+      "dialogueKo": "A: 소상공인들이 왜 디지털 판매세 과세 형평성을 로비하고 있나요? / B: 세금 없이 운영되는 해외 전자상거래 플랫폼과의 공정한 경쟁 환경을 만들기 위해서입니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_22",
+    "idiom": "tip the balance",
+    "meaning": "균형을 무너뜨리다, 판세를 결정짓다 (= tip the scale)",
+    "pronunciation": "[tɪp ðə ˈbæləns]",
+    "category": "경제·비즈니스",
+    "tags": [
+      "결정적요인",
+      "판세변화",
+      "시사경제"
+    ],
+    "origin": "팽팽하게 맞물려 있던 양팔 저울(balance)의 한쪽에 작은 무게추가 더해져 저울이 한쪽으로 기울어지듯(tip), 승패를 가르는 결정적 요인으로 작용함을 뜻합니다.",
+    "example": "The surprise endorsement from the tech billionaire tipped the balance in favor of the merger.",
+    "exampleKo": "기술 거물의 깜짝 지지 선언은 합병 찬성 쪽으로 판세를 결정짓는 계기가 되었습니다.",
+    "dialogue": {
+      "speakerA": "The acquisition negotiations between the two airline giants were deadlocked.",
+      "speakerB": "Government loan guarantees ultimately tipped the balance toward finalizing the deal.",
+      "dialogueKo": "A: 두 대형 항공사 간의 인수 협상이 교착 상태에 빠져 있었죠. / B: 정부의 대출 보증이 궁극적으로 최종 타결 쪽으로 판세를 기울였습니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_23",
+    "idiom": "strike a balance",
+    "meaning": "균형을 유지하다, 절충안을 찾다",
+    "pronunciation": "[straɪk ə ˈbæləns]",
+    "category": "경제·비즈니스",
+    "tags": [
+      "정책조율",
+      "타협",
+      "사설빈출"
+    ],
+    "origin": "상충하는 두 가치 사이에서 치우침 없이 정밀하게 균형점(balance point)을 타격해 일치시킨다는 뜻으로, 성장과 분배, 자유와 안보 간의 조율을 논할 때 핵심 표현입니다.",
+    "example": "Policymakers must strike a balance between curbing inflation and stimulating economic growth.",
+    "exampleKo": "정책 입안자들은 인플레이션 억제와 경기 부양 사이에서 정교한 균형을 유지해야 합니다.",
+    "dialogue": {
+      "speakerA": "How can remote companies sustain strong collaboration while preserving employee autonomy?",
+      "speakerB": "Leaders need to strike a careful balance through clear asynchronous documentation.",
+      "dialogueKo": "A: 원격 근무 기업들이 자율성을 보장하면서 탄탄한 협업을 유지하려면 어떡해야 하죠? / B: 리더들이 명확한 비동기 문서화를 통해 신중하게 절충점을 찾아야 합니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_24",
+    "idiom": "take precedence over",
+    "meaning": "~보다 우선하다, 앞서다, 더 우위에 서다",
+    "pronunciation": "[teɪk ˈprɛsɪdəns ˈoʊvər]",
+    "category": "경제·비즈니스",
+    "tags": [
+      "우선순위",
+      "정책결정",
+      "법률규정"
+    ],
+    "origin": "앞서 걸어가다(precede)에서 파생된 'precedence(우선권)'를 취한다는 뜻으로, 위기 상황이나 정책 설계에서 어떤 가치가 최상위 우선순위를 갖는지 규정합니다.",
+    "example": "During a workplace disaster evacuation, employee safety takes precedence over asset preservation.",
+    "exampleKo": "사업장 재난 대피 상황에서는 직원의 안전이 자산 보전보다 무조건 우선합니다.",
+    "dialogue": {
+      "speakerA": "Should we accelerate software delivery or verify compliance standards first?",
+      "speakerB": "Data security and compliance must take precedence over speed to market.",
+      "dialogueKo": "A: 소프트웨어 출시 일정을 앞당길까요, 아니면 보안 규정 준수부터 확인할까요? / B: 시장 출시 속도보다 데이터 보안과 규정 준수가 반드시 우선해야 합니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_25",
+    "idiom": "zero-sum game",
+    "meaning": "제로섬 게임 (한쪽의 득이 다른 쪽의 실이 되는 게임)",
+    "pronunciation": "[ˌzɪroʊ ˈsʌm ɡeɪm]",
+    "category": "경제·비즈니스",
+    "tags": [
+      "게임이론",
+      "무역분쟁",
+      "경제학"
+    ],
+    "origin": "수학 게임 이론(Game Theory)에서 모든 참가자의 득실 합계가 정확히 영(0)이 되는 구조로, 윈-윈(win-win) 협력의 반대 개념으로 무역 분쟁이나 패권 다툼에 빈출합니다.",
+    "example": "Global trade should be viewed as mutual wealth creation, not a zero-sum game.",
+    "exampleKo": "국제 무역은 상호 간의 부를 창출하는 과정으로 보아야지, 제로섬 게임으로 간주해선 안 됩니다.",
+    "dialogue": {
+      "speakerA": "Do tariff escalations benefit either exporting nation in the long run?",
+      "speakerB": "Rarely. Protectionist trade wars inevitably devolve into destructive zero-sum games.",
+      "dialogueKo": "A: 관세 인상 전쟁이 장기적으로 수출국 어느 한쪽에 이득이 될까요? / B: 거의 없습니다. 보호무역 전쟁은 필연적으로 파괴적인 제로섬 게임으로 전락합니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_26",
+    "idiom": "in a bid to",
+    "meaning": "~하려는 시도로, ~하기 위한 노력으로 (= in an attempt to)",
+    "pronunciation": "[ɪn ə bɪd tuː]",
+    "category": "경제·비즈니스",
+    "tags": [
+      "목적행동",
+      "뉴스헤드라인",
+      "최고빈출"
+    ],
+    "origin": "경매에서 가격을 제시(bid)하며 물건을 쟁취하려 애쓰는 행동에서 비롯되어, 경제 기사 및 영자신문 1면 헤드라인에서 정부나 기업의 정책 목적을 나타낼 때 매일 등장합니다.",
+    "example": "The central bank slashed benchmark rates in a bid to stimulate private capital investment.",
+    "exampleKo": "중앙은행은 민간 자본 투자를 촉진하기 위한 시도로 기준금리를 전격 인하했습니다.",
+    "dialogue": {
+      "speakerA": "Why is the tech conglomerate offering free cloud computing credits to startups?",
+      "speakerB": "In a bid to lock in promising early-stage founders onto their ecosystem.",
+      "dialogueKo": "A: 저 테크 대기업은 왜 스타트업들에게 무료 클라우드 크레딧을 제공하고 있나요? / B: 유망한 초기 창업자들을 자사 생태계에 묶어두려는 시도입니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_27",
+    "idiom": "shed light on",
+    "meaning": "~을 명백히 규명하다, 밝혀내다, 이해를 돕다",
+    "pronunciation": "[ʃɛd laɪt ɑːn]",
+    "category": "학술·연구",
+    "tags": [
+      "연구성과",
+      "학술논문",
+      "수능/토플"
+    ],
+    "origin": "어두운 암흑 속에 숨겨져 있던 대상에 환한 빛(light)을 비추어(shed) 실체를 투명하게 드러나게 한다는 뜻으로, 학술 논문의 결론부 및 초록(Abstract)에 단골 출제됩니다.",
+    "example": "Recent genomic sequencing has shed light on the evolutionary migration of early humans.",
+    "exampleKo": "최근의 유전체 염기서열 분석은 초기 인류의 진화적 이주 경로를 명백하게 규명해 주었습니다.",
+    "dialogue": {
+      "speakerA": "Will this clinical data finally resolve the debate surrounding drug efficacy?",
+      "speakerB": "It should shed light on how molecular receptors react under sustained dosage.",
+      "dialogueKo": "A: 이번 임상 데이터가 마침내 약효에 관한 논쟁을 해결해 줄 수 있을까요? / B: 분자 수용체가 지속적인 투약 하에서 어떻게 반응하는지 명확히 밝혀줄 것입니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_28",
+    "idiom": "draw upon",
+    "meaning": "(기존 지식·데이터·경험·자원을) 활용하다, 끌어다 쓰다",
+    "pronunciation": "[drɔː əˈpɑːn]",
+    "category": "학술·연구",
+    "tags": [
+      "자료활용",
+      "연구방법론",
+      "논문어휘"
+    ],
+    "origin": "깊은 우물에서 두레박으로 물을 길어 올리듯(draw), 선행 연구 문헌이나 축적된 방대한 데이터베이스에서 필요한 통찰을 추출하여 분석에 활용함을 뜻합니다.",
+    "example": "The sociologist drew upon longitudinal census archives to trace intergenerational mobility.",
+    "exampleKo": "그 사회학자는 세대 간 계층 이동성을 추적하기 위해 방대한 종단 인구조사 자료를 활용했습니다.",
+    "dialogue": {
+      "speakerA": "How did the algorithm accurately anticipate consumer churn patterns?",
+      "speakerB": "It draws upon five years of granular transactional records.",
+      "dialogueKo": "A: 그 알고리즘은 고객 이탈 패턴을 어떻게 그렇게 정확히 예측했나요? / B: 5개년에 걸친 세밀한 거래 기록 데이터를 활용하기 때문입니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_29",
+    "idiom": "take into account",
+    "meaning": "~을 고려하다, 참작하다, 감안하다",
+    "pronunciation": "[teɪk ˈɪntuː əˈkaʊnt]",
+    "category": "학술·연구",
+    "tags": [
+      "변수통제",
+      "조건감안",
+      "필수독해"
+    ],
+    "origin": "회계 장부(account)에 특정 비용이나 변수를 누락하지 않고 정식 항목으로 계산에 반영한다는 데서 유래하여, 분석 시 숨겨진 변수들을 철저히 계산에 포함시킴을 뜻합니다.",
+    "example": "Climate forecasting models must take into account complex ocean circulation anomalies.",
+    "exampleKo": "기후 예측 모델은 복잡한 해양 순환 이상 현상을 반드시 계산에 고려해야 합니다.",
+    "dialogue": {
+      "speakerA": "The preliminary financial projection looks exceptionally promising.",
+      "speakerB": "Did your forecasting team take inflationary cost pressures into account?",
+      "dialogueKo": "A: 예비 재무 전망치가 대단히 유망해 보입니다. / B: 귀하의 예측팀이 인플레이션으로 인한 비용 상승 압박을 참작했습니까?"
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_30",
+    "idiom": "bear in mind",
+    "meaning": "~을 명심하다, 유념하다 (= keep in mind)",
+    "pronunciation": "[bɛr ɪn maɪnd]",
+    "category": "학술·연구",
+    "tags": [
+      "주의사항",
+      "논문주의",
+      "학술어휘"
+    ],
+    "origin": "'bear(마음속에 품고 지니다)'의 의미로, 분석 결과를 해석하거나 결론을 도출할 때 데이터의 한계나 전제 조건을 절대 망각하지 말 것을 독자에게 환기시킵니다.",
+    "example": "Readers must bear in mind that correlation does not necessarily imply direct causation.",
+    "exampleKo": "독자들은 상관관계가 반드시 직접적인 인과관계를 의미하지는 않는다는 점을 명심해야 합니다.",
+    "dialogue": {
+      "speakerA": "The survey results indicate an overwhelming customer preference for minimalism.",
+      "speakerB": "Bear in mind that sample demographics were heavily skewed toward college students.",
+      "dialogueKo": "A: 설문조사 결과 고객들이 미니멀리즘을 압도적으로 선호하는 것으로 나타났습니다. / B: 표본 인구통계가 대학생 층에 편중되었다는 점을 유념해야 합니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_31",
+    "idiom": "come into play",
+    "meaning": "(요인이나 법칙이) 작동하기 시작하다, 영향을 미치다",
+    "pronunciation": "[kʌm ˈɪntuː pleɪ]",
+    "category": "학술·연구",
+    "tags": [
+      "작용시작",
+      "변수작동",
+      "과학/경제"
+    ],
+    "origin": "연극 무대나 경기장 경기(play)에 대기하고 있던 핵심 선수가 투입되어 상황에 실질적인 영향을 미치기 시작한다는 의미의 비유입니다.",
+    "example": "When interest rates plunge to near-zero levels, psychological liquidity traps come into play.",
+    "exampleKo": "금리가 제로 수준에 가깝게 급락하면, 심리적인 유동성 함정 요인이 본격적으로 작용하기 시작합니다.",
+    "dialogue": {
+      "speakerA": "Why didn't the structural material buckle under extreme thermal stress?",
+      "speakerB": "Nanoscale molecular reinforcements come into play at elevated temperatures.",
+      "dialogueKo": "A: 그 구조 소재는 왜 극단적인 열 스트레스 아래에서도 휘어지지 않았나요? / B: 고온 상태에서 나노 크기의 분자 보강재가 본격적으로 작동하기 때문입니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_32",
+    "idiom": "boil down to",
+    "meaning": "결국 ~로 귀결되다, 핵심 요약은 ~이다",
+    "pronunciation": "[bɔɪl daʊn tuː]",
+    "category": "학술·연구",
+    "tags": [
+      "핵심압축",
+      "결론도출",
+      "비즈니스"
+    ],
+    "origin": "요리할 때 액체를 오랜 시간 졸이면(boil down) 불필요한 수분은 다 날아가고 가장 진한 핵심 엑기스만 남는 모습에서 핵심 쟁점을 압축할 때 씁니다.",
+    "example": "The prolonged debate among the committee members boiled down to funding availability.",
+    "exampleKo": "위원회 위원들 간의 오랜 토론은 결국 연구 자금의 가용성 문제 하나로 귀결되었습니다.",
+    "dialogue": {
+      "speakerA": "What was the executive takeaway after hours of strategy review?",
+      "speakerB": "It essentially boils down to improving retention rather than spending on new ads.",
+      "dialogueKo": "A: 몇 시간의 전략 검토 끝에 경영진이 내린 핵심 결론은 무엇이었나요? / B: 신규 광고에 돈을 쓰기보다 기존 사용자 유지율을 개선하는 것으로 요약됩니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_33",
+    "idiom": "iron out",
+    "meaning": "(문제·장애·의견 차이를) 다림질하듯 매끄럽게 해결하다",
+    "pronunciation": "[ˈaɪərn aʊt]",
+    "category": "학술·연구",
+    "tags": [
+      "문제해결",
+      "조율",
+      "협상문서"
+    ],
+    "origin": "구겨진 옷을 다리미(iron)로 꾹꾹 눌러 주름을 반듯하게 펴듯, 계약서 조항이나 연구 프로토콜에 존재하는 미세한 결함이나 마찰을 완벽히 해결하는 과정을 나타냅니다.",
+    "example": "Engineers worked around the clock to iron out software compatibility bugs before launch.",
+    "exampleKo": "엔지니어들은 소프트웨어 출시 전에 호환성 버그를 말끔히 해결하기 위해 24시간 매달렸습니다.",
+    "dialogue": {
+      "speakerA": "Are international trade negotiators close to signing the bilateral accord?",
+      "speakerB": "They just need a few more sessions to iron out agricultural import quotas.",
+      "dialogueKo": "A: 국제 무역 협상가들이 양자 협정 서결에 가까워졌습니까? / B: 농산물 수입 쿼터 문제를 원만히 매듭짓기 위해 몇 차례의 추가 회담만 남겨두고 있습니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_34",
+    "idiom": "hinge upon",
+    "meaning": "~에 전적으로 달려있다, 좌우되다 (= depend entirely on)",
+    "pronunciation": "[hɪndʒ əˈpɑːn]",
+    "category": "학술·연구",
+    "tags": [
+      "결정적조건",
+      "의존관계",
+      "수능빈출"
+    ],
+    "origin": "무거운 문 전체가 문틀에 달린 경첩(hinge) 하나에 매달려 지탱되듯, 전체 프로젝트의 성패나 역사적 사건이 단 하나의 중대한 전제 조건에 달려있음을 표현합니다.",
+    "example": "The credibility of the archaeological hypothesis hinges upon accurate carbon dating results.",
+    "exampleKo": "그 고고학적 가설의 신뢰성은 정확한 방사성 탄소 연대 측정 결과에 전적으로 좌우됩니다.",
+    "dialogue": {
+      "speakerA": "Will this merger receive antitrust approval from European regulators?",
+      "speakerB": "The outcome hinges entirely upon whether the merged entity monopolizes logistics.",
+      "dialogueKo": "A: 이번 합병이 유럽 규제 당국으로부터 반독점 승인을 받을 수 있을까요? / B: 합병 법인이 물류망을 독점하는지 여부에 모든 결과가 전적으로 달려 있습니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_35",
+    "idiom": "pave the way for",
+    "meaning": "~을 위한 길을 열다, 발판/토대를 마련하다",
+    "pronunciation": "[peɪv ðə weɪ fɔːr]",
+    "category": "학술·연구",
+    "tags": [
+      "혁신발판",
+      "역사적전환",
+      "논문결론"
+    ],
+    "origin": "울퉁불퉁한 흙길을 돌과 아스팔트로 탄탄하게 포장(pave)하여 후속 주자들이 빠르고 안전하게 지나갈 수 있게 하듯, 획기적인 학술 발견이 후대 연구를 개척함을 뜻합니다.",
+    "example": "Einstein's early theoretical breakthroughs paved the way for modern quantum mechanics.",
+    "exampleKo": "아인슈타인의 초기 이론적 돌파구는 현대 양자역학의 눈부신 발전을 위한 탄탄한 길을 열어주었습니다.",
+    "dialogue": {
+      "speakerA": "What makes this novel polymer discovery so significant for battery tech?",
+      "speakerB": "It paves the way for ultra-fast charging without risk of thermal degradation.",
+      "dialogueKo": "A: 이번 신규 고분자 발견이 배터리 기술에 왜 그렇게 중요한가요? / B: 열화 위험 없이 초고속 충전을 구현할 수 있는 결정적인 발판을 마련해주기 때문입니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_36",
+    "idiom": "lose sight of",
+    "meaning": "~을 놓치다, (중요한 목표·본질을) 망각하다",
+    "pronunciation": "[luːz saɪt əv]",
+    "category": "학술·연구",
+    "tags": [
+      "비판적사고",
+      "본질상실",
+      "경고어휘"
+    ],
+    "origin": "시야(sight)에서 중요한 표적을 놓쳐 엉뚱한 곳을 헤매듯, 지엽적인 세부 사항에 매몰되어 조직이나 연구의 근본적인 목적을 잃어버리는 실수를 경고할 때 빈출합니다.",
+    "example": "Researchers must not lose sight of the ethical implications while pursuing rapid AI advancements.",
+    "exampleKo": "연구자들은 인공지능의 급격한 기술 발전을 추구하는 과정에서 윤리적 함의를 결코 놓쳐서는 안 됩니다.",
+    "dialogue": {
+      "speakerA": "The product development team is arguing over dozens of niche micro-features.",
+      "speakerB": "We must not lose sight of our core objective: delivering a lightweight user experience.",
+      "dialogueKo": "A: 제품 개발팀이 수십 개의 지엽적인 부가 기능들을 두고 논쟁 중입니다. / B: 가벼운 사용자 경험을 제공한다는 우리의 핵심 목표를 결코 잊어서는 안 됩니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_37",
+    "idiom": "take for granted",
+    "meaning": "~을 당연한 것으로 여기다, 가치를 제대로 인식하지 못하다",
+    "pronunciation": "[teɪk fɔːr ˈɡræntɪd]",
+    "category": "학술·연구",
+    "tags": [
+      "고정관념",
+      "반성적성찰",
+      "수능1순위"
+    ],
+    "origin": "이미 무상으로 주어진(granted) 공기나 물처럼 여기며 소중함을 잊어버리는 인간의 인식적 오류를 지적할 때, 인문학 및 사회과학 독해 지문에 반복 등장합니다.",
+    "example": "Modern consumers often take clean drinking water for granted until supplies are disrupted.",
+    "exampleKo": "현대 소비자들은 공급에 차질이 빚어지기 전까지는 깨끗한 식수의 존재를 종종 당연한 것으로 여깁니다.",
+    "dialogue": {
+      "speakerA": "Why does the essay emphasize the fragility of democratic institutions?",
+      "speakerB": "The author argues that citizens take constitutional liberties for granted at their peril.",
+      "dialogueKo": "A: 왜 그 논문은 민주주의 제도의 취약성을 그토록 강조하나요? / B: 저자는 시민들이 헌법적 자유를 당연시할 때 민주주의가 심각한 위험에 처한다고 역설합니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_38",
+    "idiom": "double-edged sword",
+    "meaning": "양날의 검 (이점과 심각한 위험이 공존하는 것)",
+    "pronunciation": "[ˈdʌbl ɛdʒd sɔːrd]",
+    "category": "사회·시사",
+    "tags": [
+      "딜레마",
+      "기술비판",
+      "사설논평"
+    ],
+    "origin": "양쪽에 날이 서 있는 검은 적을 베어낼 수도 있지만 다루는 사람 자신도 베일 수 있다는 고대 무기 비유로, AI나 소셜미디어 등 신기술의 명암을 논할 때 가장 많이 쓰입니다.",
+    "example": "Social media platforms represent a double-edged sword: enabling global solidarity while spreading disinformation.",
+    "exampleKo": "소셜 미디어 플랫폼은 전 세계적 연대를 가능케 하는 동시에 가짜뉴스를 확산시키는 양날의 검입니다.",
+    "dialogue": {
+      "speakerA": "Autonomous generative AI offers astonishing productivity enhancements.",
+      "speakerB": "Yet it remains a double-edged sword due to severe copyright and bias risks.",
+      "dialogueKo": "A: 자율 생성형 AI는 놀라운 생산성 향상을 제공합니다. / B: 하지만 심각한 저작권 침해와 편향성 위험으로 인해 여전히 양날의 검입니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_39",
+    "idiom": "catch-22",
+    "meaning": "진퇴양난, 모순된 딜레마 (이러지도 저러지도 못하는 상황)",
+    "pronunciation": "[ˌkætʃ twɛnti ˈtuː]",
+    "category": "사회·시사",
+    "tags": [
+      "모순구조",
+      "제도적한계",
+      "사회비판"
+    ],
+    "origin": "조지프 헬러의 군대 풍자 소설 '캐치-22'에서 유래. 미치광이만 비행 임무에서 제외될 수 있는데 비행 거부를 신청하는 것은 제정신이라는 뜻이라 결코 빠져나갈 수 없는 모순 상태를 가리킵니다.",
+    "example": "Job seekers face a classic catch-22: they need experience to get a job, but need a job to get experience.",
+    "exampleKo": "구직자들은 전형적인 딜레마에 직면합니다. 일자리를 얻으려면 경력이 필요한데, 경력을 쌓으려면 일자리가 필요합니다.",
+    "dialogue": {
+      "speakerA": "The hospital cannot treat uninsured emergency patients, yet state grants require active treatment.",
+      "speakerB": "It's a bureaucratic catch-22 that leaves healthcare administrators paralyzed.",
+      "dialogueKo": "A: 병원은 무보험 응급환자를 치료할 수 없는데, 주정부 지원금 요건은 적극적인 치료를 요구합니다. / B: 의료 행정가들을 마비시키는 전형적인 관료적 모순(catch-22)입니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_40",
+    "idiom": "fall prey to",
+    "meaning": "~의 먹잇감이 되다, ~의 희생양이 되다",
+    "pronunciation": "[fɔːl preɪ tuː]",
+    "category": "사회·시사",
+    "tags": [
+      "피해발생",
+      "사회문제",
+      "취약계층"
+    ],
+    "origin": "맹수의 먹잇감(prey)이 되어 잡아먹히듯, 사기(fraud), 선동(propaganda), 고리대금 같은 유해한 덫에 걸려 취약한 개인이 희생당하는 비극적 상황을 기술합니다.",
+    "example": "Financially distressed households frequently fall prey to predatory lending schemes.",
+    "exampleKo": "재정적 곤경에 처한 가계들은 약탈적 대출 사기의 먹잇감으로 전락하기 십상입니다.",
+    "dialogue": {
+      "speakerA": "Why are senior citizens disproportionately targeted by online phishing scams?",
+      "speakerB": "Isolated individuals easily fall prey to manipulative social engineering tactics.",
+      "dialogueKo": "A: 어르신들이 왜 온라인 피싱 사기의 표적이 유독 많이 될까요? / B: 고립된 개인들이 교묘한 심리 조작 기법의 먹잇감이 되기 쉽기 때문입니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_41",
+    "idiom": "run counter to",
+    "meaning": "~에 정면으로 배치되다, ~의 취지에 역행하다",
+    "pronunciation": "[rʌn ˈkaʊntər tuː]",
+    "category": "사회·시사",
+    "tags": [
+      "가치충돌",
+      "정책비판",
+      "법률분석"
+    ],
+    "origin": "물살이나 바람을 거슬러 반대 방향(counter)으로 거세게 내달리듯, 특정 입법이나 행동이 헌법적 가치, 도덕적 상식, 공식 강령과 충돌함을 비판할 때 쓰입니다.",
+    "example": "Imposing mandatory censorship runs counter to fundamental principles of free expression.",
+    "exampleKo": "강제적 검열을 부과하는 것은 자유로운 표현의 근본적인 원칙에 정면으로 배치됩니다.",
+    "dialogue": {
+      "speakerA": "Does the new tariff decree align with the international trade treaty?",
+      "speakerB": "Legal scholars argue that unilateral tariffs run counter to WTO commitments.",
+      "dialogueKo": "A: 이번 신규 관세 명령이 국제 무역 조약과 부합합니까? / B: 법학자들은 일방적 관세 조치가 WTO 공약에 정면으로 역행한다고 지적합니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_42",
+    "idiom": "weigh in on",
+    "meaning": "(논쟁이나 중대 사안에) 적극 개입하다, 공식 의견을 표명하다",
+    "pronunciation": "[weɪ ɪn ɑːn]",
+    "category": "사회·시사",
+    "tags": [
+      "여론형성",
+      "전문가의견",
+      "시사뉴스"
+    ],
+    "origin": "권투 경기 전 선수가 체중계에 올라가 몸무게를 재고(weigh in) 공식 경기에 투입되듯, 저명한 전문가나 정부 인사가 논쟁에 참여해 발언력을 행사하는 모습을 뜻합니다.",
+    "example": "Prominent bioethicists weighed in on the contentious debate over human embryonic gene editing.",
+    "exampleKo": "저명한 생명윤리학자들이 인간 배아 유전자 편집을 둘러싼 논쟁적인 사안에 공식 입장을 표명했습니다.",
+    "dialogue": {
+      "speakerA": "Has the attorney general released a statement regarding the antitrust lawsuit?",
+      "speakerB": "She is scheduled to weigh in on the proceedings during this afternoon's press briefing.",
+      "dialogueKo": "A: 법무부 장관이 반독점 소송과 관련해 성명을 발표했습니까? / B: 오늘 오후 언론 브리핑에서 해당 재판 절차에 대해 입장을 밝힐 예정입니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_43",
+    "idiom": "on the brink of",
+    "meaning": "~의 직전에, ~의 벼랑 끝에 선 (= on the verge of)",
+    "pronunciation": "[ɑːn ðə brɪŋk əv]",
+    "category": "사회·시사",
+    "tags": [
+      "위기임박",
+      "생태위기",
+      "국제정치"
+    ],
+    "origin": "가파른 벼랑 끝이나 절벽의 모서리(brink)에 아슬아슬하게 서 있는 위태로운 모습으로, 멸종, 전쟁, 파산 등 파국적 사태가 일어나기 일보 직전의 긴박감을 전달합니다.",
+    "example": "Decades of severe deforestation have pushed countless endemic species to the brink of extinction.",
+    "exampleKo": "수십 년간 이어진 극심한 삼림 파괴는 수많은 고유종들을 멸종 직전의 벼랑 끝으로 내몰았습니다.",
+    "dialogue": {
+      "speakerA": "Is the regional banking network stable after the liquidity collapse?",
+      "speakerB": "Several mid-sized institutions remain on the brink of insolvency without state intervention.",
+      "dialogueKo": "A: 유동성 붕괴 이후 지역 은행망이 안정되었나요? / B: 정부의 시장 개입 없이는 몇몇 중소 금융기관들이 파산 일보 직전에 놓여 있습니다."
+    },
+    "status": "learning",
+    "favorite": true,
+    "userNote": ""
+  },
+  {
+    "id": "doc_44",
+    "idiom": "a rule of thumb",
+    "meaning": "경험에 근거한 법칙, 실용적인 어림 기준",
+    "pronunciation": "[ə ruːl əv θʌm]",
+    "category": "사회·시사",
+    "tags": [
+      "실용지침",
+      "경험법칙",
+      "수능/토익"
+    ],
+    "origin": "정밀한 자가 없던 옛날 목수나 직공들이 엄지손가락(thumb)의 대략적인 너비나 길이로 치수를 재던 데서 유래하여, 완벽한 과학적 공식은 아니지만 실용적으로 널리 통용되는 기준을 의미합니다.",
+    "example": "As a general rule of thumb, emergency savings should cover at least six months of basic living costs.",
+    "exampleKo": "일반적인 경험칙에 따르면, 비상 자금은 최소 6개월 치의 기본 생활비를 충당할 수 있어야 합니다.",
+    "dialogue": {
+      "speakerA": "How much debt is considered safe when assessing sovereign fiscal health?",
+      "speakerB": "A common rule of thumb is keeping government debt-to-GDP ratios below sixty percent.",
+      "dialogueKo": "A: 국가 재정 건전성을 평가할 때 어느 정도의 부채가 안전하다고 간주되나요? / B: 흔히 통용되는 경험 법칙은 GDP 대비 정부 부채 비율을 60% 미만으로 유지하는 것입니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  },
+  {
+    "id": "doc_45",
+    "idiom": "give way to",
+    "meaning": "~에 굴복하다, ~에게 자리를 내주다, ~로 바뀌다",
+    "pronunciation": "[ɡɪv weɪ tuː]",
+    "category": "사회·시사",
+    "tags": [
+      "시대전환",
+      "패러다임변화",
+      "역사/사회"
+    ],
+    "origin": "길(way)을 양보해 비켜주거나 구조물이 무게를 견디지 못하고 무너지듯, 낡은 체제나 패러다임이 새로운 시대적 흐름에 밀려 자리를 내어주는 전환기를 묘사합니다.",
+    "example": "Traditional print journalism has gradually given way to ubiquitous real-time digital media.",
+    "exampleKo": "전통적인 인쇄 저널리즘은 어디서나 접할 수 있는 실시간 디지털 미디어에 점차 자리를 내주었습니다.",
+    "dialogue": {
+      "speakerA": "Will mechanical manufacturing jobs disappear completely?",
+      "speakerB": "Routine manual labor is giving way to automated robotic engineering.",
+      "dialogueKo": "A: 기계 제조 일자리가 완전히 사라질까요? / B: 일상적인 단순 수작업은 자동화된 로봇 공학 기술로 빠르게 대체되고 있습니다."
+    },
+    "status": "learning",
+    "favorite": false,
+    "userNote": ""
+  }
+];
 
     // State Variables
     let idioms = [];
@@ -1904,17 +2404,40 @@
       setupKeyboardShortcuts();
     }
 
-    // Load data from LocalStorage or Fallback
-    function loadIdiomsData() {
+    const DATASET_VERSION = 'v3_doc_reading';
+
+    // Reset to Document Reading dataset
+    function resetToDocIdioms() {
+      if (!confirm('문서독해 다빈도 숙어장 기본 데이터로 새로고침하시겠습니까?')) return;
+      localStorage.removeItem('idiom_master_data');
+      localStorage.setItem('idiom_master_version', DATASET_VERSION);
+      idioms = JSON.parse(JSON.stringify(DEFAULT_IDIOMS));
+      saveIdiomsData();
+      location.reload();
+    }
+
+    // Load data from LocalStorage or Auto-migrate to Document Reading Idioms
+    async function loadIdiomsData() {
+      const storedVer = localStorage.getItem('idiom_master_version');
       const stored = localStorage.getItem('idiom_master_data');
+
+      // Auto-migrate if version is outdated (from conversational to doc reading)
+      if (storedVer !== DATASET_VERSION) {
+        idioms = JSON.parse(JSON.stringify(DEFAULT_IDIOMS));
+        localStorage.setItem('idiom_master_version', DATASET_VERSION);
+        saveIdiomsData();
+        return;
+      }
+
       if (stored) {
         try {
           idioms = JSON.parse(stored);
         } catch (e) {
-          idioms = DEFAULT_IDIOMS;
+          idioms = JSON.parse(JSON.stringify(DEFAULT_IDIOMS));
+          saveIdiomsData();
         }
       } else {
-        idioms = DEFAULT_IDIOMS;
+        idioms = JSON.parse(JSON.stringify(DEFAULT_IDIOMS));
         saveIdiomsData();
       }
     }

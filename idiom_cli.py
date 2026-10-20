@@ -228,19 +228,19 @@ def search_and_list(idioms):
 
 def add_custom_idiom(idioms):
     print("\n➕ [나만의 새로운 숙어 추가]")
-    idiom_text = input("영어 숙어 입력 (예: piece of cake): ").strip()
+    idiom_text = input("영어 숙어/표현 입력 (예: in light of): ").strip()
     if not idiom_text:
         print("숙어는 비어 있을 수 없습니다.")
         return
 
-    meaning_text = input("한글 뜻 입력 (예: 식은 죽 먹기): ").strip()
+    meaning_text = input("한글 뜻 입력 (예: ~에 비추어 볼 때, 고려하여): ").strip()
     if not meaning_text:
         print("뜻은 비어 있을 수 없습니다.")
         return
 
-    category = input("카테고리 (1: 일상회화, 2: 비즈니스, 3: 감정·태도, 기본: 일상회화): ").strip()
-    cat_map = {"1": "일상회화", "2": "비즈니스", "3": "감정·태도"}
-    category_val = cat_map.get(category, "일상회화")
+    category = input("카테고리 (1: 논리·전개, 2: 경제·비즈니스, 3: 학술·연구, 4: 사회·시사, 기본: 논리·전개): ").strip()
+    cat_map = {"1": "논리·전개", "2": "경제·비즈니스", "3": "학술·연구", "4": "사회·시사"}
+    category_val = cat_map.get(category, "논리·전개")
 
     pron = input("발음 기호/힌트 (선택): ").strip()
     origin = input("외우는 꿀팁 / 어원 유래 (선택): ").strip()

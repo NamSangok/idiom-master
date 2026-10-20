@@ -1,4 +1,4 @@
-const CACHE_NAME = 'idiom-master-v2';
+const CACHE_NAME = 'idiom-master-v3';
 const ASSETS = [
   './',
   './index.html',
